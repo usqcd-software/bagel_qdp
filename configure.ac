@@ -18,7 +18,7 @@ AC_CONFIG_HEADERS([lib/bagel_qdp_options_internal.h])
 
 dnl user must specify where the bagel installation is 
 AC_ARG_WITH(bagel,
-   AC_HELP_STRING([--with_bagel=BAGELDIR],
+   AC_HELP_STRING([--with-bagel=BAGELDIR],
                   [ Use BAGEL installed in BAGELDIR ] ),
    [ bagel_bindir=${with_bagel}/bin
      bagel_CXX=`${bagel_bindir}/bagel-config --cxx`
