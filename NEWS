@@ -1,0 +1,10 @@
+10/06/2005: BJ: Real BLAS routines exist
+	axpy3,axmy3
+	axpby3,axmby3
+	vscal3
+	vadd3
+	local_sumsq
+	local_vcdot
+	local_vcdot_real
+
+Chiral Projection routines next...
