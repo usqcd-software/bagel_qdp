@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-SOURCES = $(write_local_sumsq_x_SOURCES) $(write_local_vcdot_x_SOURCES) $(write_local_vcdot_real_x_SOURCES) $(write_vadd_x_SOURCES) $(write_vadd_chproj_x_SOURCES) $(write_vag5xpby_x_SOURCES) $(write_vaxpbg5y_x_SOURCES) $(write_vaxpby_x_SOURCES) $(write_vaxpby_chproj_x_SOURCES) $(write_vaxpy_x_SOURCES) $(write_vaxpy_chproj_x_SOURCES) $(write_vg5axpby_x_SOURCES) $(write_vscal_x_SOURCES) $(write_vscal_chproj_x_SOURCES) $(write_vscal_g5_x_SOURCES) $(write_vxpag5y_x_SOURCES) $(write_vxpay_chproj_x_SOURCES)
+SOURCES = $(write_local_sumsq_SOURCES) $(write_local_vcdot_SOURCES) $(write_local_vcdot_real_SOURCES) $(write_vadd_SOURCES) $(write_vadd_chproj_SOURCES) $(write_vag5xpby_SOURCES) $(write_vaxpbg5y_SOURCES) $(write_vaxpby_SOURCES) $(write_vaxpby_chproj_SOURCES) $(write_vaxpy_SOURCES) $(write_vaxpy_chproj_SOURCES) $(write_vg5axpby_SOURCES) $(write_vscal_SOURCES) $(write_vscal_chproj_SOURCES) $(write_vscal_g5_SOURCES) $(write_vxpag5y_SOURCES) $(write_vxpay_chproj_SOURCES)
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -36,15 +36,15 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-noinst_PROGRAMS = write_vaxpy.x$(EXEEXT) write_vaxpby.x$(EXEEXT) \
-	write_vadd.x$(EXEEXT) write_vscal.x$(EXEEXT) \
-	write_local_sumsq.x$(EXEEXT) write_local_vcdot.x$(EXEEXT) \
-	write_local_vcdot_real.x$(EXEEXT) \
-	write_vscal_chproj.x$(EXEEXT) write_vadd_chproj.x$(EXEEXT) \
-	write_vaxpy_chproj.x$(EXEEXT) write_vxpay_chproj.x$(EXEEXT) \
-	write_vaxpby_chproj.x$(EXEEXT) write_vscal_g5.x$(EXEEXT) \
-	write_vaxpbg5y.x$(EXEEXT) write_vag5xpby.x$(EXEEXT) \
-	write_vxpag5y.x$(EXEEXT) write_vg5axpby.x$(EXEEXT)
+noinst_PROGRAMS = write_vaxpy$(EXEEXT) write_vaxpby$(EXEEXT) \
+	write_vadd$(EXEEXT) write_vscal$(EXEEXT) \
+	write_local_sumsq$(EXEEXT) write_local_vcdot$(EXEEXT) \
+	write_local_vcdot_real$(EXEEXT) write_vscal_chproj$(EXEEXT) \
+	write_vadd_chproj$(EXEEXT) write_vaxpy_chproj$(EXEEXT) \
+	write_vxpay_chproj$(EXEEXT) write_vaxpby_chproj$(EXEEXT) \
+	write_vscal_g5$(EXEEXT) write_vaxpbg5y$(EXEEXT) \
+	write_vag5xpby$(EXEEXT) write_vxpag5y$(EXEEXT) \
+	write_vg5axpby$(EXEEXT)
 subdir = code_gen
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -56,59 +56,57 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/lib/bagel_qdp_options_internal.h
 CONFIG_CLEAN_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_write_local_sumsq_x_OBJECTS = write_local_sumsq.$(OBJEXT)
-write_local_sumsq_x_OBJECTS = $(am_write_local_sumsq_x_OBJECTS)
-write_local_sumsq_x_LDADD = $(LDADD)
-am_write_local_vcdot_x_OBJECTS = write_local_vcdot.$(OBJEXT)
-write_local_vcdot_x_OBJECTS = $(am_write_local_vcdot_x_OBJECTS)
-write_local_vcdot_x_LDADD = $(LDADD)
-am_write_local_vcdot_real_x_OBJECTS =  \
-	write_local_vcdot_real.$(OBJEXT)
-write_local_vcdot_real_x_OBJECTS =  \
-	$(am_write_local_vcdot_real_x_OBJECTS)
-write_local_vcdot_real_x_LDADD = $(LDADD)
-am_write_vadd_x_OBJECTS = write_vadd.$(OBJEXT)
-write_vadd_x_OBJECTS = $(am_write_vadd_x_OBJECTS)
-write_vadd_x_LDADD = $(LDADD)
-am_write_vadd_chproj_x_OBJECTS = write_vadd_chproj.$(OBJEXT)
-write_vadd_chproj_x_OBJECTS = $(am_write_vadd_chproj_x_OBJECTS)
-write_vadd_chproj_x_LDADD = $(LDADD)
-am_write_vag5xpby_x_OBJECTS = write_vag5xpby.$(OBJEXT)
-write_vag5xpby_x_OBJECTS = $(am_write_vag5xpby_x_OBJECTS)
-write_vag5xpby_x_LDADD = $(LDADD)
-am_write_vaxpbg5y_x_OBJECTS = write_vaxpbg5y.$(OBJEXT)
-write_vaxpbg5y_x_OBJECTS = $(am_write_vaxpbg5y_x_OBJECTS)
-write_vaxpbg5y_x_LDADD = $(LDADD)
-am_write_vaxpby_x_OBJECTS = write_vaxpby.$(OBJEXT)
-write_vaxpby_x_OBJECTS = $(am_write_vaxpby_x_OBJECTS)
-write_vaxpby_x_LDADD = $(LDADD)
-am_write_vaxpby_chproj_x_OBJECTS = write_vaxpby_chproj.$(OBJEXT)
-write_vaxpby_chproj_x_OBJECTS = $(am_write_vaxpby_chproj_x_OBJECTS)
-write_vaxpby_chproj_x_LDADD = $(LDADD)
-am_write_vaxpy_x_OBJECTS = write_vaxpy.$(OBJEXT)
-write_vaxpy_x_OBJECTS = $(am_write_vaxpy_x_OBJECTS)
-write_vaxpy_x_LDADD = $(LDADD)
-am_write_vaxpy_chproj_x_OBJECTS = write_vaxpy_chproj.$(OBJEXT)
-write_vaxpy_chproj_x_OBJECTS = $(am_write_vaxpy_chproj_x_OBJECTS)
-write_vaxpy_chproj_x_LDADD = $(LDADD)
-am_write_vg5axpby_x_OBJECTS = write_vg5axpby.$(OBJEXT)
-write_vg5axpby_x_OBJECTS = $(am_write_vg5axpby_x_OBJECTS)
-write_vg5axpby_x_LDADD = $(LDADD)
-am_write_vscal_x_OBJECTS = write_vscal.$(OBJEXT)
-write_vscal_x_OBJECTS = $(am_write_vscal_x_OBJECTS)
-write_vscal_x_LDADD = $(LDADD)
-am_write_vscal_chproj_x_OBJECTS = write_vscal_chproj.$(OBJEXT)
-write_vscal_chproj_x_OBJECTS = $(am_write_vscal_chproj_x_OBJECTS)
-write_vscal_chproj_x_LDADD = $(LDADD)
-am_write_vscal_g5_x_OBJECTS = write_vscal_g5.$(OBJEXT)
-write_vscal_g5_x_OBJECTS = $(am_write_vscal_g5_x_OBJECTS)
-write_vscal_g5_x_LDADD = $(LDADD)
-am_write_vxpag5y_x_OBJECTS = write_vxpag5y.$(OBJEXT)
-write_vxpag5y_x_OBJECTS = $(am_write_vxpag5y_x_OBJECTS)
-write_vxpag5y_x_LDADD = $(LDADD)
-am_write_vxpay_chproj_x_OBJECTS = write_vxpay_chproj.$(OBJEXT)
-write_vxpay_chproj_x_OBJECTS = $(am_write_vxpay_chproj_x_OBJECTS)
-write_vxpay_chproj_x_LDADD = $(LDADD)
+am_write_local_sumsq_OBJECTS = write_local_sumsq.$(OBJEXT)
+write_local_sumsq_OBJECTS = $(am_write_local_sumsq_OBJECTS)
+write_local_sumsq_LDADD = $(LDADD)
+am_write_local_vcdot_OBJECTS = write_local_vcdot.$(OBJEXT)
+write_local_vcdot_OBJECTS = $(am_write_local_vcdot_OBJECTS)
+write_local_vcdot_LDADD = $(LDADD)
+am_write_local_vcdot_real_OBJECTS = write_local_vcdot_real.$(OBJEXT)
+write_local_vcdot_real_OBJECTS = $(am_write_local_vcdot_real_OBJECTS)
+write_local_vcdot_real_LDADD = $(LDADD)
+am_write_vadd_OBJECTS = write_vadd.$(OBJEXT)
+write_vadd_OBJECTS = $(am_write_vadd_OBJECTS)
+write_vadd_LDADD = $(LDADD)
+am_write_vadd_chproj_OBJECTS = write_vadd_chproj.$(OBJEXT)
+write_vadd_chproj_OBJECTS = $(am_write_vadd_chproj_OBJECTS)
+write_vadd_chproj_LDADD = $(LDADD)
+am_write_vag5xpby_OBJECTS = write_vag5xpby.$(OBJEXT)
+write_vag5xpby_OBJECTS = $(am_write_vag5xpby_OBJECTS)
+write_vag5xpby_LDADD = $(LDADD)
+am_write_vaxpbg5y_OBJECTS = write_vaxpbg5y.$(OBJEXT)
+write_vaxpbg5y_OBJECTS = $(am_write_vaxpbg5y_OBJECTS)
+write_vaxpbg5y_LDADD = $(LDADD)
+am_write_vaxpby_OBJECTS = write_vaxpby.$(OBJEXT)
+write_vaxpby_OBJECTS = $(am_write_vaxpby_OBJECTS)
+write_vaxpby_LDADD = $(LDADD)
+am_write_vaxpby_chproj_OBJECTS = write_vaxpby_chproj.$(OBJEXT)
+write_vaxpby_chproj_OBJECTS = $(am_write_vaxpby_chproj_OBJECTS)
+write_vaxpby_chproj_LDADD = $(LDADD)
+am_write_vaxpy_OBJECTS = write_vaxpy.$(OBJEXT)
+write_vaxpy_OBJECTS = $(am_write_vaxpy_OBJECTS)
+write_vaxpy_LDADD = $(LDADD)
+am_write_vaxpy_chproj_OBJECTS = write_vaxpy_chproj.$(OBJEXT)
+write_vaxpy_chproj_OBJECTS = $(am_write_vaxpy_chproj_OBJECTS)
+write_vaxpy_chproj_LDADD = $(LDADD)
+am_write_vg5axpby_OBJECTS = write_vg5axpby.$(OBJEXT)
+write_vg5axpby_OBJECTS = $(am_write_vg5axpby_OBJECTS)
+write_vg5axpby_LDADD = $(LDADD)
+am_write_vscal_OBJECTS = write_vscal.$(OBJEXT)
+write_vscal_OBJECTS = $(am_write_vscal_OBJECTS)
+write_vscal_LDADD = $(LDADD)
+am_write_vscal_chproj_OBJECTS = write_vscal_chproj.$(OBJEXT)
+write_vscal_chproj_OBJECTS = $(am_write_vscal_chproj_OBJECTS)
+write_vscal_chproj_LDADD = $(LDADD)
+am_write_vscal_g5_OBJECTS = write_vscal_g5.$(OBJEXT)
+write_vscal_g5_OBJECTS = $(am_write_vscal_g5_OBJECTS)
+write_vscal_g5_LDADD = $(LDADD)
+am_write_vxpag5y_OBJECTS = write_vxpag5y.$(OBJEXT)
+write_vxpag5y_OBJECTS = $(am_write_vxpag5y_OBJECTS)
+write_vxpag5y_LDADD = $(LDADD)
+am_write_vxpay_chproj_OBJECTS = write_vxpay_chproj.$(OBJEXT)
+write_vxpay_chproj_OBJECTS = $(am_write_vxpay_chproj_OBJECTS)
+write_vxpay_chproj_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/lib
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -117,26 +115,24 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-SOURCES = $(write_local_sumsq_x_SOURCES) \
-	$(write_local_vcdot_x_SOURCES) \
-	$(write_local_vcdot_real_x_SOURCES) $(write_vadd_x_SOURCES) \
-	$(write_vadd_chproj_x_SOURCES) $(write_vag5xpby_x_SOURCES) \
-	$(write_vaxpbg5y_x_SOURCES) $(write_vaxpby_x_SOURCES) \
-	$(write_vaxpby_chproj_x_SOURCES) $(write_vaxpy_x_SOURCES) \
-	$(write_vaxpy_chproj_x_SOURCES) $(write_vg5axpby_x_SOURCES) \
-	$(write_vscal_x_SOURCES) $(write_vscal_chproj_x_SOURCES) \
-	$(write_vscal_g5_x_SOURCES) $(write_vxpag5y_x_SOURCES) \
-	$(write_vxpay_chproj_x_SOURCES)
-DIST_SOURCES = $(write_local_sumsq_x_SOURCES) \
-	$(write_local_vcdot_x_SOURCES) \
-	$(write_local_vcdot_real_x_SOURCES) $(write_vadd_x_SOURCES) \
-	$(write_vadd_chproj_x_SOURCES) $(write_vag5xpby_x_SOURCES) \
-	$(write_vaxpbg5y_x_SOURCES) $(write_vaxpby_x_SOURCES) \
-	$(write_vaxpby_chproj_x_SOURCES) $(write_vaxpy_x_SOURCES) \
-	$(write_vaxpy_chproj_x_SOURCES) $(write_vg5axpby_x_SOURCES) \
-	$(write_vscal_x_SOURCES) $(write_vscal_chproj_x_SOURCES) \
-	$(write_vscal_g5_x_SOURCES) $(write_vxpag5y_x_SOURCES) \
-	$(write_vxpay_chproj_x_SOURCES)
+SOURCES = $(write_local_sumsq_SOURCES) $(write_local_vcdot_SOURCES) \
+	$(write_local_vcdot_real_SOURCES) $(write_vadd_SOURCES) \
+	$(write_vadd_chproj_SOURCES) $(write_vag5xpby_SOURCES) \
+	$(write_vaxpbg5y_SOURCES) $(write_vaxpby_SOURCES) \
+	$(write_vaxpby_chproj_SOURCES) $(write_vaxpy_SOURCES) \
+	$(write_vaxpy_chproj_SOURCES) $(write_vg5axpby_SOURCES) \
+	$(write_vscal_SOURCES) $(write_vscal_chproj_SOURCES) \
+	$(write_vscal_g5_SOURCES) $(write_vxpag5y_SOURCES) \
+	$(write_vxpay_chproj_SOURCES)
+DIST_SOURCES = $(write_local_sumsq_SOURCES) \
+	$(write_local_vcdot_SOURCES) $(write_local_vcdot_real_SOURCES) \
+	$(write_vadd_SOURCES) $(write_vadd_chproj_SOURCES) \
+	$(write_vag5xpby_SOURCES) $(write_vaxpbg5y_SOURCES) \
+	$(write_vaxpby_SOURCES) $(write_vaxpby_chproj_SOURCES) \
+	$(write_vaxpy_SOURCES) $(write_vaxpy_chproj_SOURCES) \
+	$(write_vg5axpby_SOURCES) $(write_vscal_SOURCES) \
+	$(write_vscal_chproj_SOURCES) $(write_vscal_g5_SOURCES) \
+	$(write_vxpag5y_SOURCES) $(write_vxpay_chproj_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -249,23 +245,23 @@ buildCXXFLAGS = @bagel_CXXFLAGS@
 buildLDFLAGS = @bagel_LDFLAGS@
 buildLIBS = @bagel_LIBS@
 buildLINKFLAGS = $(buildLDFLAGS) $(buildLIBS)
-write_vaxpy_x_SOURCES = write_vaxpy.cc
-write_vaxpby_x_SOURCES = write_vaxpby.cc
-write_vadd_x_SOURCES = write_vadd.cc
-write_vscal_x_SOURCES = write_vscal.cc
-write_local_sumsq_x_SOURCES = write_local_sumsq.cc
-write_local_vcdot_x_SOURCES = write_local_vcdot.cc
-write_local_vcdot_real_x_SOURCES = write_local_vcdot_real.cc
-write_vscal_chproj_x_SOURCES = write_vscal_chproj.cc
-write_vadd_chproj_x_SOURCES = write_vadd_chproj.cc
-write_vaxpy_chproj_x_SOURCES = write_vaxpy_chproj.cc
-write_vxpay_chproj_x_SOURCES = write_vxpay_chproj.cc
-write_vaxpby_chproj_x_SOURCES = write_vaxpby_chproj.cc
-write_vscal_g5_x_SOURCES = write_vscal_g5.cc
-write_vaxpbg5y_x_SOURCES = write_vaxpbg5y.cc
-write_vxpag5y_x_SOURCES = write_vxpag5y.cc
-write_vag5xpby_x_SOURCES = write_vag5xpby.cc
-write_vg5axpby_x_SOURCES = write_vg5axpby.cc
+write_vaxpy_SOURCES = write_vaxpy.cc
+write_vaxpby_SOURCES = write_vaxpby.cc
+write_vadd_SOURCES = write_vadd.cc
+write_vscal_SOURCES = write_vscal.cc
+write_local_sumsq_SOURCES = write_local_sumsq.cc
+write_local_vcdot_SOURCES = write_local_vcdot.cc
+write_local_vcdot_real_SOURCES = write_local_vcdot_real.cc
+write_vscal_chproj_SOURCES = write_vscal_chproj.cc
+write_vadd_chproj_SOURCES = write_vadd_chproj.cc
+write_vaxpy_chproj_SOURCES = write_vaxpy_chproj.cc
+write_vxpay_chproj_SOURCES = write_vxpay_chproj.cc
+write_vaxpby_chproj_SOURCES = write_vaxpby_chproj.cc
+write_vscal_g5_SOURCES = write_vscal_g5.cc
+write_vaxpbg5y_SOURCES = write_vaxpbg5y.cc
+write_vxpag5y_SOURCES = write_vxpag5y.cc
+write_vag5xpby_SOURCES = write_vag5xpby.cc
+write_vg5axpby_SOURCES = write_vg5axpby.cc
 all: all-am
 
 .SUFFIXES:
@@ -507,26 +503,26 @@ uninstall-am: uninstall-info-am
 
 
 # Override compile and links for build system compilation
-SUFFIXES: .C .x
-write_vaxpy.x: write_vaxpy.cc
-write_vaxpby.x: write_vaxpby.cc
-write_vadd.x: write_vadd.cc
-write_vscal.x: write_vscal.cc
-write_local_sumsq.x: write_local_sumsq.cc
-write_local_vcdot.x: write_local_vcdot.cc
-write_local_vcdot_real.x: write_local_vcdot_real.cc
-write_vscal_chproj.x: write_vscal_chproj.cc
-write_vadd_chproj.x: write_vadd_chproj.cc
-write_vaxpy_chproj.x: write_vaxpy_chproj.cc
-write_vxpay_chproj.x: write_vxpay_chproj.cc
-write_vaxpby_chproj.x: write_vaxpby_chproj.cc
-write_vscal_g5.x: write_vscal_g5.cc
-write_vaxpbg5y.x: write_vaxpbg5y.cc
-write_vxpag5y.x: write_vxpag5y.cc
-write_vag5xpby.x: write_vag5xpby.cc
-write_vg5axpby.x: write_vg5axpby.cc
+SUFFIXES: .C $(EXEEXT)
+write_vaxpy$(EXEEXT): write_vaxpy.cc
+write_vaxpby$(EXEEXT): write_vaxpby.cc
+write_vadd$(EXEEXT): write_vadd.cc
+write_vscal$(EXEEXT): write_vscal.cc
+write_local_sumsq$(EXEEXT): write_local_sumsq.cc
+write_local_vcdot$(EXEEXT): write_local_vcdot.cc
+write_local_vcdot_real$(EXEEXT): write_local_vcdot_real.cc
+write_vscal_chproj$(EXEEXT): write_vscal_chproj.cc
+write_vadd_chproj$(EXEEXT): write_vadd_chproj.cc
+write_vaxpy_chproj$(EXEEXT): write_vaxpy_chproj.cc
+write_vxpay_chproj$(EXEEXT): write_vxpay_chproj.cc
+write_vaxpby_chproj$(EXEEXT): write_vaxpby_chproj.cc
+write_vscal_g5$(EXEEXT): write_vscal_g5.cc
+write_vaxpbg5y$(EXEEXT): write_vaxpbg5y.cc
+write_vxpag5y$(EXEEXT): write_vxpag5y.cc
+write_vag5xpby$(EXEEXT): write_vag5xpby.cc
+write_vg5axpby$(EXEEXT): write_vg5axpby.cc
 
-%.x: %.cc
+%$(EXEEXT): %.cc
 	$(buildCXX) $(buildCXXFLAGS) -o $@ $< $(buildLDFLAGS) $(buildLIBS)
 	chmod u+x $@
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
