@@ -1,4 +1,4 @@
-AC_INIT([bagel_qdp],[1.1.2],[bj@ph.ed.ac.uk])
+AC_INIT([bagel_qdp],[1.1.3],[bj@ph.ed.ac.uk])
 AC_CONFIG_AUX_DIR(config)
 
 dnl boilerplace
@@ -18,7 +18,7 @@ AC_CONFIG_HEADERS([lib/bagel_qdp_options_internal.h])
 
 dnl user must specify where the bagel installation is 
 AC_ARG_WITH(bagel,
-   AC_HELP_STRING([--with-bagel=BAGELDIR],
+   AC_HELP_STRING([--with_bagel=BAGELDIR],
                   [ Use BAGEL installed in BAGELDIR ] ),
    [ bagel_bindir=${with_bagel}/bin
      bagel_CXX=`${bagel_bindir}/bagel-config --cxx`
