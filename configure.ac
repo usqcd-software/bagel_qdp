@@ -73,7 +73,8 @@ dnl configuration
 case ${ac_PRECISION} in
   single)
 	AC_MSG_NOTICE([Using single precision])
-	AC_DEFINE([USE_DOUBLE],[0],[ Use Single Precision] )
+	#  don't define this if not using double precision
+	#AC_DEFINE([USE_DOUBLE],[0],[ Use Single Precision] )
         ;;
   double)
 	AC_MSG_NOTICE([Using double precision])
