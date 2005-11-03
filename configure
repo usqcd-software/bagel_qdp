@@ -3551,11 +3551,8 @@ case ${ac_PRECISION} in
   single)
 	{ echo "$as_me:$LINENO: Using single precision" >&5
 echo "$as_me: Using single precision" >&6;}
-
-cat >>confdefs.h <<\_ACEOF
-#define USE_DOUBLE 0
-_ACEOF
-
+	#  don't define this if not using double precision
+	#AC_DEFINE([USE_DOUBLE],[0],[ Use Single Precision] )
         ;;
   double)
 	{ echo "$as_me:$LINENO: Using double precision" >&5

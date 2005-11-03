@@ -25,7 +25,9 @@ noinst_PROGRAMS = \
 	write_vaxpbg5y$(EXEEXT) \
 	write_vag5xpby$(EXEEXT) \
 	write_vxpag5y$(EXEEXT) \
-	write_vg5axpby$(EXEEXT)
+	write_vg5axpby$(EXEEXT) \
+	write_vaxpbg5iy$(EXEEXT)
+	write_vxpag5iy.$(EXEEXT)
 
 write_vaxpy_SOURCES = write_vaxpy.cc
 write_vaxpy$(EXEEXT): write_vaxpy.cc
@@ -77,6 +79,13 @@ write_vag5xpby$(EXEEXT): write_vag5xpby.cc
 
 write_vg5axpby_SOURCES = write_vg5axpby.cc
 write_vg5axpby$(EXEEXT): write_vg5axpby.cc
+
+write_vaxpbg5iy_SOURCES = write_vaxpbg5iy.cc
+write_vaxpbg5iy$(EXEEXT): write_vaxpbg5iy.cc
+
+write_vxpag5iy_SOURCE = write_vxpag5iy.cc
+write_vxpag5iy$(EXEEXT): write_vxpag5iy.cc
+
 
 %$(EXEEXT): %.cc
 	$(buildCXX) $(buildCXXFLAGS) -o $@ $< $(buildLDFLAGS) $(buildLIBS)

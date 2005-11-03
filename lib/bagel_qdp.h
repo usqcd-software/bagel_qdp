@@ -230,6 +230,32 @@ extern "C" {
 		  Float* y,
 		  int n_4vec);
 
+  void qdp_vaxpbg5iy(Float* Out,
+		    Float* a, 
+		    Float* x,
+		    Float* b,
+		    Float* y,
+		    int n_4vec);
+
+  void qdp_vaxmbg5iy(Float* Out,
+		    Float* a, 
+		    Float* x,
+		    Float* b,
+		    Float* y,
+		    int n_4vec);
+
+ void qdp_vxpag5iy(Float* Out, 
+		   Float* a,
+		   Float* x,
+		   Float* y,
+		   int n_4vec);
+
+ void qdp_vxmag5iy(Float* Out, 
+		   Float* a,
+		   Float* x,
+		   Float* y,
+		   int n_4vec);
+
 };
 
 

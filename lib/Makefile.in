@@ -81,7 +81,9 @@ am__objects_1 = bagel_vaxpy3.$(OBJEXT) bagel_vaxmy3.$(OBJEXT) \
 	bagel_vaxmbg5y.$(OBJEXT) bagel_vag5xpby.$(OBJEXT) \
 	bagel_vag5xmby.$(OBJEXT) bagel_vxpag5y.$(OBJEXT) \
 	bagel_vxmag5y.$(OBJEXT) bagel_vg5axpby.$(OBJEXT) \
-	bagel_vg5axmby.$(OBJEXT)
+	bagel_vg5axmby.$(OBJEXT) bagel_vaxpbg5iy.$(OBJEXT) \
+	bagel_vaxmbg5iy.$(OBJEXT) bagel_vxpag5iy.$(OBJEXT) \
+	bagel_vxmag5iy.$(OBJEXT)
 am__objects_2 = noarch_bagel_vaxpy3.$(OBJEXT) \
 	noarch_bagel_vaxmy3.$(OBJEXT) noarch_bagel_vaxpby3.$(OBJEXT) \
 	noarch_bagel_vaxmby3.$(OBJEXT) noarch_bagel_vadd3.$(OBJEXT) \
@@ -113,7 +115,11 @@ am__objects_2 = noarch_bagel_vaxpy3.$(OBJEXT) \
 	noarch_bagel_vag5xpby.$(OBJEXT) \
 	noarch_bagel_vag5xmby.$(OBJEXT) noarch_bagel_vxpag5y.$(OBJEXT) \
 	noarch_bagel_vxmag5y.$(OBJEXT) noarch_bagel_vg5axpby.$(OBJEXT) \
-	noarch_bagel_vg5axmby.$(OBJEXT)
+	noarch_bagel_vg5axmby.$(OBJEXT) \
+	noarch_bagel_vaxpbg5iy.$(OBJEXT) \
+	noarch_bagel_vaxmbg5iy.$(OBJEXT) \
+	noarch_bagel_vxpag5iy.$(OBJEXT) \
+	noarch_bagel_vxmag5iy.$(OBJEXT)
 @BUILD_ARCH_SOURCES_FALSE@@BUILD_NOARCH_SOURCES_TRUE@am__objects_3 = $(am__objects_2)
 @BUILD_ARCH_SOURCES_TRUE@am__objects_3 = $(am__objects_1)
 nodist_libbagel_qdp_a_OBJECTS = $(am__objects_3)
@@ -287,7 +293,11 @@ arch_sources = \
 	bagel_vxpag5y.S \
 	bagel_vxmag5y.S \
 	bagel_vg5axpby.S \
-	bagel_vg5axmby.S
+	bagel_vg5axmby.S \
+	bagel_vaxpbg5iy.S \
+	bagel_vaxmbg5iy.S \
+	bagel_vxpag5iy.S \
+	bagel_vxmag5iy.S
 
 
 # Noarch architectures
@@ -328,7 +338,11 @@ noarch_sources = \
 	noarch_bagel_vxpag5y.cc \
 	noarch_bagel_vxmag5y.cc \
 	noarch_bagel_vg5axpby.cc \
-	noarch_bagel_vg5axmby.cc
+	noarch_bagel_vg5axmby.cc \
+	noarch_bagel_vaxpbg5iy.cc \
+	noarch_bagel_vaxmbg5iy.cc \
+	noarch_bagel_vxpag5iy.cc \
+	noarch_bagel_vxmag5iy.cc
 
 
 # Conditional definition of extra sources
@@ -359,7 +373,9 @@ libbagel_qdp_a_DEPENDENCIES = $(extra_sources) \
 	$(bagelWriterDir)/write_vaxpbg5y$(EXEEXT) \
 	$(bagelWriterDir)/write_vag5xpby$(EXEEXT) \
 	$(bagelWriterDir)/write_vxpag5y$(EXEEXT) \
-	$(bagelWriterDir)/write_vg5axpby$(EXEEXT)
+	$(bagelWriterDir)/write_vg5axpby$(EXEEXT) \
+	$(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT) \
+	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 
 
 # Funky rules for making the .S and .C sources
@@ -464,6 +480,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vadd_ch_plus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vag5xmby.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vag5xpby.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxmbg5iy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxmbg5y.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxmby3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxmby_ch_minus.Po@am__quote@
@@ -471,6 +488,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxmy3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxmy_ch_minus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxmy_ch_plus.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxpbg5iy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxpbg5y.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxpby3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vaxpby_ch_minus.Po@am__quote@
@@ -487,9 +505,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vsub3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vsub_ch_minus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vsub_ch_plus.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vxmag5iy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vxmag5y.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vxmay_ch_minus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vxmay_ch_plus.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vxpag5iy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vxpag5y.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vxpay_ch_minus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vxpay_ch_plus.Po@am__quote@
@@ -836,6 +856,18 @@ bagel_vxpag5y.S: $(bagelWriterDir)/write_vxpag5y$(EXEEXT)
 bagel_vxmag5y.S: $(bagelWriterDir)/write_vxpag5y$(EXEEXT)
 	$(bagelWriterDir)/write_vxpag5y$(EXEEXT) -m -nqdp_vxmag5y -P$(bagelTargetName) > $@
 
+bagel_vaxpbg5iy.S: $(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT)
+	$(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT) -nqdp_vaxpbg5iy -P$(bagelTargetName) > $@
+
+bagel_vaxmbg5iy.S: $(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT)
+	$(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT) -m -nqdp_vaxmbg5iy -P$(bagelTargetName) > $@
+
+bagel_vxpag5iy.S: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
+	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) -nqdp_vxpag5iy -P$(bagelTargetName) > $@
+
+bagel_vxmag5iy.S: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
+	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) -m -nqdp_vxmag5iy -P$(bagelTargetName) > $@
+
 ########## NOARCH TARGETS ##############################
 
 noarch_bagel_vaxpy3.cc: $(bagelWriterDir)/write_vaxpy$(EXEEXT)
@@ -947,6 +979,18 @@ noarch_bagel_vg5axpby.cc: $(bagelWriterDir)/write_vg5axpby$(EXEEXT)
 
 noarch_bagel_vg5axmby.cc: $(bagelWriterDir)/write_vg5axpby$(EXEEXT)
 	$(bagelWriterDir)/write_vg5axpby$(EXEEXT) -m -nqdp_vg5axmby -P$(bagelTargetName) > $@
+
+noarch_bagel_vaxpbg5iy.cc: $(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT)
+	$(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT) -nqdp_vaxpbg5iy -P$(bagelTargetName) > $@
+
+noarch_bagel_vaxmbg5iy.cc: $(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT)
+	$(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT) -m -nqdp_vaxmbg5iy -P$(bagelTargetName) > $@
+
+noarch_bagel_vxpag5iy.cc: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
+	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) -nqdp_vxpag5iy -P$(bagelTargetName) > $@
+
+noarch_bagel_vxmag5iy.cc: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
+	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) -m -nqdp_vxmag5iy -P$(bagelTargetName) > $@
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
