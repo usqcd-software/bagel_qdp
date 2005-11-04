@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-SOURCES = $(write_local_sumsq_SOURCES) $(write_local_vcdot_SOURCES) $(write_local_vcdot_real_SOURCES) $(write_vadd_SOURCES) $(write_vadd_chproj_SOURCES) $(write_vag5xpby_SOURCES) $(write_vaxpbg5iy_SOURCES) $(write_vaxpbg5y_SOURCES) $(write_vaxpby_SOURCES) $(write_vaxpby_chproj_SOURCES) $(write_vaxpy_SOURCES) $(write_vaxpy_chproj_SOURCES) $(write_vg5axpby_SOURCES) $(write_vscal_SOURCES) $(write_vscal_chproj_SOURCES) $(write_vscal_g5_SOURCES) $(write_vxpag5y_SOURCES) $(write_vxpay_chproj_SOURCES)
+SOURCES = $(write_local_sumsq_SOURCES) $(write_local_vcdot_SOURCES) $(write_local_vcdot_real_SOURCES) $(write_vadd_SOURCES) $(write_vadd_chproj_SOURCES) $(write_vag5xpby_SOURCES) $(write_vaxpbg5iy_SOURCES) $(write_vaxpbg5y_SOURCES) $(write_vaxpby_SOURCES) $(write_vaxpby_chproj_SOURCES) $(write_vaxpy_SOURCES) $(write_vaxpy_chproj_SOURCES) $(write_vg5axpby_SOURCES) $(write_vscal_SOURCES) $(write_vscal_chproj_SOURCES) $(write_vscal_g5_SOURCES) $(write_vxpag5iy_SOURCES) $(write_vxpag5y_SOURCES) $(write_vxpay_chproj_SOURCES)
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -44,7 +44,8 @@ noinst_PROGRAMS = write_vaxpy$(EXEEXT) write_vaxpby$(EXEEXT) \
 	write_vxpay_chproj$(EXEEXT) write_vaxpby_chproj$(EXEEXT) \
 	write_vscal_g5$(EXEEXT) write_vaxpbg5y$(EXEEXT) \
 	write_vag5xpby$(EXEEXT) write_vxpag5y$(EXEEXT) \
-	write_vg5axpby$(EXEEXT) write_vaxpbg5iy$(EXEEXT)
+	write_vg5axpby$(EXEEXT) write_vaxpbg5iy$(EXEEXT) \
+	write_vxpag5iy$(EXEEXT)
 subdir = code_gen
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -104,6 +105,9 @@ write_vscal_chproj_LDADD = $(LDADD)
 am_write_vscal_g5_OBJECTS = write_vscal_g5.$(OBJEXT)
 write_vscal_g5_OBJECTS = $(am_write_vscal_g5_OBJECTS)
 write_vscal_g5_LDADD = $(LDADD)
+am_write_vxpag5iy_OBJECTS = write_vxpag5iy.$(OBJEXT)
+write_vxpag5iy_OBJECTS = $(am_write_vxpag5iy_OBJECTS)
+write_vxpag5iy_LDADD = $(LDADD)
 am_write_vxpag5y_OBJECTS = write_vxpag5y.$(OBJEXT)
 write_vxpag5y_OBJECTS = $(am_write_vxpag5y_OBJECTS)
 write_vxpag5y_LDADD = $(LDADD)
@@ -126,7 +130,8 @@ SOURCES = $(write_local_sumsq_SOURCES) $(write_local_vcdot_SOURCES) \
 	$(write_vaxpy_SOURCES) $(write_vaxpy_chproj_SOURCES) \
 	$(write_vg5axpby_SOURCES) $(write_vscal_SOURCES) \
 	$(write_vscal_chproj_SOURCES) $(write_vscal_g5_SOURCES) \
-	$(write_vxpag5y_SOURCES) $(write_vxpay_chproj_SOURCES)
+	$(write_vxpag5iy_SOURCES) $(write_vxpag5y_SOURCES) \
+	$(write_vxpay_chproj_SOURCES)
 DIST_SOURCES = $(write_local_sumsq_SOURCES) \
 	$(write_local_vcdot_SOURCES) $(write_local_vcdot_real_SOURCES) \
 	$(write_vadd_SOURCES) $(write_vadd_chproj_SOURCES) \
@@ -135,8 +140,8 @@ DIST_SOURCES = $(write_local_sumsq_SOURCES) \
 	$(write_vaxpby_chproj_SOURCES) $(write_vaxpy_SOURCES) \
 	$(write_vaxpy_chproj_SOURCES) $(write_vg5axpby_SOURCES) \
 	$(write_vscal_SOURCES) $(write_vscal_chproj_SOURCES) \
-	$(write_vscal_g5_SOURCES) $(write_vxpag5y_SOURCES) \
-	$(write_vxpay_chproj_SOURCES)
+	$(write_vscal_g5_SOURCES) $(write_vxpag5iy_SOURCES) \
+	$(write_vxpag5y_SOURCES) $(write_vxpay_chproj_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -267,7 +272,7 @@ write_vxpag5y_SOURCES = write_vxpag5y.cc
 write_vag5xpby_SOURCES = write_vag5xpby.cc
 write_vg5axpby_SOURCES = write_vg5axpby.cc
 write_vaxpbg5iy_SOURCES = write_vaxpbg5iy.cc
-write_vxpag5iy_SOURCE = write_vxpag5iy.cc
+write_vxpag5iy_SOURCES = write_vxpag5iy.cc
 all: all-am
 
 .SUFFIXES:
@@ -327,6 +332,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_vscal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_vscal_chproj.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_vscal_g5.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_vxpag5iy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_vxpag5y.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_vxpay_chproj.Po@am__quote@
 
@@ -511,7 +517,6 @@ uninstall-am: uninstall-info-am
 
 # Override compile and links for build system compilation
 SUFFIXES: .C $(EXEEXT)
-	write_vxpag5iy.$(EXEEXT)
 write_vaxpy$(EXEEXT): write_vaxpy.cc
 write_vaxpby$(EXEEXT): write_vaxpby.cc
 write_vadd$(EXEEXT): write_vadd.cc
