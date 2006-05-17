@@ -12,6 +12,8 @@ bagel_qdp_cxx="@CXX@"
 bagel_qdp_cxxflags="@CXXFLAGS@ @QDPXX_CXXFLAGS@ -I@includedir@"
 bagel_qdp_ldflags="@LDFLAGS@ @QDPXX_LDFLAGS@ -L@libdir@"
 bagel_qdp_libs="-lbagel_qdp @QDPXX_LIBS@ @LIBS@"
+bagel_qdp_ranlib="@RANLIB@"
+bagel_qdp_ar="@AR@"
 
 usage()
 {
@@ -25,6 +27,8 @@ Options:
   [--cxxflags]
   [--ldflags]
   [--libs]
+  [--ranlib]
+  [--ar] 
                                                                                 
 EOF
   exit $1
@@ -79,8 +83,13 @@ while test $# -gt 0; do
                                                                                 
     --libs)
       echo_libs=yes
+      ;; 
+    --ar)
+      echo ${bagel_qdp_ar}
       ;;
-
+    --ranlib)
+      echo ${bagel_qdp_ranlib}
+      ;;
   *)
       usage 1 1>&2
       ;;
