@@ -9,7 +9,6 @@
  *
  */
 
-extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -17,8 +16,6 @@ extern "C" {
 #include <string.h>
 #include <ctype.h>
 #include "processor.h"
-}
-
 #include "registers.h"
 
 #define RE 0
@@ -134,14 +131,14 @@ void qdp_vaxpbg5iy( char *name)
   reg_array_2d(z,Fregs,3,2);
 
   /* Various offsets. Start with 0 */
-  def_off(ZERO,0);
+  def_dp_off(ZERO,0);
 
   /* A vector is of length 6 */
-  def_off(VEC_ATOM,6);
+  def_dp_off(VEC_ATOM,6);
 
   /* This I am guessing is some pattern to describe the vectors
      and that it has to match the 2d register allocation above */
-  offset_2d(VEC_IMM,3,2);
+  offset_2d_dp(VEC_IMM,3,2);
 
   /* Declare memory streams for prefetching */
   struct stream *PreVecX;

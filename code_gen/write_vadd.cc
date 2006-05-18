@@ -9,7 +9,6 @@
  *
  */
 
-extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -17,7 +16,6 @@ extern "C" {
 #include <string.h>
 #include <ctype.h>
 #include "processor.h"
-}
 
 #include "registers.h"
 
@@ -94,14 +92,14 @@ void qdp_vadd3( char *name)
   reg_array_2d(vec3,Fregs,3,2);
 
   /* Various offsets. Start with 0 */
-  def_off(ZERO,0);
+  def_dp_off(ZERO,0);
 
   /* A vector is of length 6 */
-  def_off(VEC_ATOM,6);
+  def_dp_off(VEC_ATOM,6);
 
   /* This I am guessing is some pattern to describe the vectors
      and that it has to match the 2d register allocation above */
-  offset_2d(VEC_IMM,3,2);
+  offset_2d_dp(VEC_IMM,3,2);
 
   /* Declare memory streams for prefetching */
   struct stream *PreVec1;
@@ -159,7 +157,7 @@ void qdp_vadd3( char *name)
   /* last bit is done at end */
   /* Peter doesn't provide a queue_isub so I do it this way */
   /* Disgusting hack to reduce the counter by 1 */
-  int ONE=def_byte_offset(1,"ONE");
+  def_off(ONE,Byte,1);
   make_inst(LOADPIPE,LOAD_IMM,one,ONE);
   make_inst(IALUPIPE, ISUB, counter, counter, one);
 

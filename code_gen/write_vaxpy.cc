@@ -9,7 +9,6 @@
  *
  */
 
-extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -17,7 +16,6 @@ extern "C" {
 #include <string.h>
 #include <ctype.h>
 #include "processor.h"
-}
 
 #include "registers.h"
 
@@ -100,9 +98,9 @@ void qcdoc_vaxpy( char *name)
   reg_array_2d(vec2,Fregs,3,2);
   reg_array_2d(vec3,Fregs,3,2);
 
-  def_off(ZERO,0);
-  def_off(VEC_ATOM,6);
-  offset_2d(VEC_IMM,3,2);
+  def_dp_off(ZERO,0);
+  def_dp_off(VEC_ATOM,6);
+  offset_2d_dp(VEC_IMM,3,2);
 
   struct stream *PreVec1;
   struct stream *PreVec2;

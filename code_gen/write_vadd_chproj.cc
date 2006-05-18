@@ -9,7 +9,6 @@
  *
  */
 
-extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -18,7 +17,6 @@ extern "C" {
 #include <ctype.h>
 #include "processor.h"
 extern struct processor* PROC;
-}
 
 #include "registers.h"
 
@@ -141,14 +139,14 @@ void qdp_vadd_chp( char *name)
   reg_array_2d(z,Fregs,3,2);
 
   /* Various offsets. Start with 0 */
-  def_off(ZERO,0);
+  def_dp_off(ZERO,0);
 
   /* A vector is of length 6 */
-  def_off(VEC_ATOM,6);
+  def_dp_off(VEC_ATOM,6);
 
   /* This I am guessing is some pattern to describe the vectors
      and that it has to match the 2d register allocation above */
-  offset_2d(VEC_IMM,3,2);
+  offset_2d_dp(VEC_IMM,3,2);
 
   /* Declare memory streams for prefetching */
   struct stream *PreVecX;
@@ -463,14 +461,14 @@ void qdp_vadd_chm( char *name)
   reg_array_2d(z,Fregs,3,2);
 
   /* Various offsets. Start with 0 */
-  def_off(ZERO,0);
+  def_dp_off(ZERO,0);
 
   /* A vector is of length 6 */
-  def_off(VEC_ATOM,6);
+  def_dp_off(VEC_ATOM,6);
 
   /* This I am guessing is some pattern to describe the vectors
      and that it has to match the 2d register allocation above */
-  offset_2d(VEC_IMM,3,2);
+  offset_2d_dp(VEC_IMM,3,2);
 
   /* Declare memory streams for prefetching */
   struct stream *PreVecX;

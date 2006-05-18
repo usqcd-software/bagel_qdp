@@ -9,7 +9,6 @@
  *
  */
 
-extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -18,7 +17,6 @@ extern "C" {
 #include <ctype.h>
 #include "processor.h"
   extern struct processor* PROC;
-}
 
 #include "registers.h"
 
@@ -99,17 +97,17 @@ void qdp_lcdotr( char *name)
   /* I will want to zero out the result (at outreptr and outimptr) */
   /* I need the word_size for that ... */
   int Isize = PROC->I_size;
-  int word_size = def_byte_offset(Isize,"word_size");
+  def_off(word_size,Byte,Isize);
   
   /* Various offsets. Start with 0 */
-  def_off(ZERO,0);
+  def_dp_off(ZERO,0);
 
   /* A vector is of length 6 */
-  def_off(VEC_ATOM,6);
+  def_dp_off(VEC_ATOM,6);
 
   /* This I am guessing is some pattern to describe the vectors
      and that it has to match the 2d register allocation above */
-  offset_2d(VEC_IMM,3,2);
+  offset_2d_dp(VEC_IMM,3,2);
 
   /* Declare memory streams for prefetching */
   struct stream *PreVec1;
@@ -183,7 +181,7 @@ void qdp_lcdotr( char *name)
   /* Peter doesn't provide a queue_isub so I do it this way */
 
   /* Disgusting hack to reduce the counter by 1 */
-  int ONE=def_byte_offset(1,"ONE");
+  def_off(ONE,Byte,1);
   make_inst(LOADPIPE,LOAD_IMM,one,ONE);
   make_inst(IALUPIPE, ISUB, counter, counter, one);
   brchno = start_loop(counter);
