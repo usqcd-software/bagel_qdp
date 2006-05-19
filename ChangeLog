@@ -1,0 +1,100 @@
+2006-05-18 21:08  edwards
+
+	* aclocal.m4, configure: INduced changes.
+
+2006-05-18 21:07  edwards
+
+	* configure.ac: Changed to 1.1.6
+
+2006-05-18 14:04  tag bagel_qdp1-1-6
+
+2006-05-18 14:04  bjoo
+
+	* aclocal.m4, code_gen/write_local_sumsq.cc,
+	  code_gen/write_local_vcdot.cc,
+	  code_gen/write_local_vcdot_real.cc, code_gen/write_vadd.cc,
+	  code_gen/write_vadd_chproj.cc, code_gen/write_vag5xpby.cc,
+	  code_gen/write_vaxpbg5iy.cc, code_gen/write_vaxpbg5y.cc,
+	  code_gen/write_vaxpby.cc, code_gen/write_vaxpby_chproj.cc,
+	  code_gen/write_vaxpy.cc, code_gen/write_vaxpy_chproj.cc,
+	  code_gen/write_vg5axpby.cc, code_gen/write_vscal.cc,
+	  code_gen/write_vscal_chproj.cc, code_gen/write_vscal_g5.cc,
+	  code_gen/write_vxpag5iy.cc, code_gen/write_vxpag5y.cc,
+	  code_gen/write_vxpay_chproj.cc: Now compiles with new BAGEL
+
+2006-05-17 15:58  tag bagel_qdp1-1-5
+
+2006-05-17 15:58  bjoo
+
+	* configure.ac, configure: Induced changes
+
+2006-05-17 15:43  bjoo
+
+	* bagel-qdp-config.in: bagel-qdp-config.in has --ranlib and --ar
+	  feature
+
+2006-05-09 17:48  tag bagel_qdp1-1-4pre
+
+2006-05-09 17:48  tag bagel_qdp1_1_4
+
+2006-05-09 17:48  bjoo
+
+	* configure, configure.ac: V1.1.4 First commit
+
+2005-11-04 11:18  edwards
+
+	* code_gen/Makefile.am: Fixed rules.
+
+2005-11-03 18:40  bjoo
+
+	* code_gen/: write_vaxpbg5iy.cc, write_vxpag5iy.cc: Added the twm
+	  code generators
+
+2005-11-03 18:39  bjoo
+
+	* configure, code_gen/Makefile.am, lib/Makefile.am,
+	  lib/bagel_qdp.h: Added blas ops useful for twisted mass
+
+2005-10-03 15:14  tag bagel_qdp1-1-3
+
+2005-10-03 15:14  osborn
+
+	* configure.ac: Changed configure.ac to not define USE_DOUBLE if
+	  not using double precision.
+
+2005-06-15 16:17  edwards
+
+	* aclocal.m4, configure: Induced changes.
+
+2005-06-15 16:17  edwards
+
+	* configure.ac, code_gen/Makefile.am, lib/Makefile.am: Fixes for
+	  cygwin.
+
+2005-06-14 13:15  edwards
+
+	* configure: Induced changes.
+
+2005-06-14 13:15  edwards
+
+	* configure.ac: Fixed info message.
+
+2005-06-14 13:12  edwards
+
+	* AUTHORS, COPYING, INSTALL, Makefile.am, NEWS, README,
+	  acinclude.m4, aclocal.m4, bagel-qdp-config.in, configure,
+	  configure.ac, code_gen/Makefile.am,
+	  code_gen/write_local_sumsq.cc, code_gen/write_local_vcdot.cc,
+	  code_gen/write_local_vcdot_real.cc, code_gen/write_vadd.cc,
+	  code_gen/write_vadd_chproj.cc, code_gen/write_vag5xpby.cc,
+	  code_gen/write_vaxpbg5y.cc, code_gen/write_vaxpby.cc,
+	  code_gen/write_vaxpby_chproj.cc, code_gen/write_vaxpy.cc,
+	  code_gen/write_vaxpy_chproj.cc, code_gen/write_vg5axpby.cc,
+	  code_gen/write_vscal.cc, code_gen/write_vscal_chproj.cc,
+	  code_gen/write_vscal_g5.cc, code_gen/write_vxpag5y.cc,
+	  code_gen/write_vxpay_chproj.cc, config/depcomp,
+	  config/install-sh, config/missing, lib/Makefile.am,
+	  lib/bagel_qdp.h, lib/bagel_qdp_options.h,
+	  lib/bagel_qdp_options_internal.h.in, tests/Makefile.am,
+	  tests/t_blas.cc: Initial version.
+
