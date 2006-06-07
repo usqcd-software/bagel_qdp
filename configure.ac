@@ -1,4 +1,4 @@
-AC_INIT([bagel_qdp],[1.1.6],[bjoo@jlab.org])
+AC_INIT([bagel_qdp],[1.1.7],[bjoo@jlab.org])
 AC_CONFIG_AUX_DIR(config)
 
 dnl boilerplace
