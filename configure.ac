@@ -64,7 +64,7 @@ AC_ARG_ENABLE(precision,
 dnl set the target cpu
 AC_ARG_ENABLE(target_cpu,
    AC_HELP_STRING([--enable-target-cpu=CPU],
-       [ Create Assembler for target CPU (ppc440|powerIII|alpha064|alpha164|alpha264|usparcII|noarch) default is ppc440 ]),
+       [ Create Assembler for target CPU (bgl|ppc440|powerIII|alpha064|alpha164|alpha264|usparcII|noarch) default is ppc440 ]),
        [ ac_TARGET_CPU=${enable_target_cpu} ],	
        [ ac_TARGET_CPU=ppc440 ]
 )
@@ -75,6 +75,10 @@ case ${ac_PRECISION} in
 	AC_MSG_NOTICE([Using single precision])
 	#  don't define this if not using double precision
 	#AC_DEFINE([USE_DOUBLE],[0],[ Use Single Precision] )
+	if test "X${ac_TARGET_CPU}X" == "XbglX";
+        then 
+	   AC_MSG_ERROR([Not supporting single prec BG/L target])
+        fi
         ;;
   double)
 	AC_MSG_NOTICE([Using double precision])
@@ -87,7 +91,7 @@ esac
 
 dnl get munged target name
 case ${ac_TARGET_CPU} in
-     ppc440|powerIII|alpha064|alpha164|alpha264|noarch|usparcII)
+     bgl|ppc440|powerIII|alpha064|alpha164|alpha264|noarch|usparcII)
 	AC_MSG_NOTICE([Producing code for ${ac_TARGET_CPU} ])
 	if test "X${ac_PRECISION}X" == "XsingleX";
         then
@@ -107,6 +111,7 @@ dnl decide whether the MADD, NOMADD, or NOARCH target list gets
 dnl added to the library list
 AM_CONDITIONAL(BUILD_ARCH_SOURCES,
 	[ test  "X${ac_TARGET_CPU}X" == "Xppc440X" \
+	     -o "X${ac_TARGET_CPU}X" == "XbglX" \
 	     -o "X${ac_TARGET_CPU}X" == "XpowerIIIX" ])
 
 AM_CONDITIONAL(BUILD_NOARCH_SOURCES,
