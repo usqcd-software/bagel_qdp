@@ -1,3 +1,39 @@
+2006-06-07 12:48  tag bagel_qdp1-1-7
+
+2006-06-07 12:48  bjoo
+
+	* aclocal.m4, configure: Induced changes
+
+2006-06-07 12:48  bjoo
+
+	* configure.ac: Did autoconfery
+
+2006-06-07 12:45  bjoo
+
+	* AUTHORS, COPYING, INSTALL, Makefile.am, NEWS, README,
+	  acinclude.m4, aclocal.m4, bagel-qdp-config.in, configure,
+	  configure.ac: Did autoconfery
+
+2006-06-07 09:52  bjoo
+
+	* configure: Induced changes
+
+2006-06-07 09:51  bjoo
+
+	* configure.ac: Bumped version to 1.1.7
+
+2006-06-07 09:44  bjoo
+
+	* aclocal.m4, configure: Remade Makefile.ins. I don't fully trust
+	  the aclocal created by the BGL autotools
+
+2006-06-07 09:43  bjoo
+
+	* aclocal.m4, configure, configure.ac: Added bgl to list of target
+	  CPUs
+
+2006-05-18 21:08  tag bagel_qdp1-1-6
+
 2006-05-18 21:08  edwards
 
 	* aclocal.m4, configure: INduced changes.
@@ -5,8 +41,6 @@
 2006-05-18 21:07  edwards
 
 	* configure.ac: Changed to 1.1.6
-
-2006-05-18 14:04  tag bagel_qdp1-1-6
 
 2006-05-18 14:04  bjoo
 
