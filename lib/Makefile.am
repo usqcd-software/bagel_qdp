@@ -50,8 +50,7 @@ arch_sources =  \
 	bagel_vaxpbg5iy.S \
 	bagel_vaxmbg5iy.S \
 	bagel_vxpag5iy.S \
-	bagel_vxmag5iy.S \
-	bagel_su3_mm.S
+	bagel_vxmag5iy.S
 
 # Noarch architectures
 noarch_sources = \
@@ -132,8 +131,7 @@ libbagel_qdp_a_DEPENDENCIES= $(extra_sources) \
 	$(bagelWriterDir)/write_vxpag5y$(EXEEXT) \
 	$(bagelWriterDir)/write_vg5axpby$(EXEEXT) \
 	$(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT) \
-	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) \
-	$(bagelWriterDir)/write_su3_mm$(EXEEXT)
+	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 
 # Funky rules for making the .S and .C sources
 bagelTargetName = @bagel_MUNGED_TARGET@
@@ -266,9 +264,6 @@ bagel_vxpag5iy.S: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 bagel_vxmag5iy.S: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) -m -nqdp_vxmag5iy -P$(bagelTargetName) > $@
 
-bagel_su3_mm.S: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
-	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_mm -P$(bagelTargetName) > $@
-
 ########## NOARCH TARGETS ##############################
 
 noarch_bagel_vaxpy3.cc: $(bagelWriterDir)/write_vaxpy$(EXEEXT)
@@ -394,6 +389,3 @@ noarch_bagel_vxpag5iy.cc: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 
 noarch_bagel_vxmag5iy.cc: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) -m -nqdp_vxmag5iy -P$(bagelTargetName) > $@
-
-noarch_bagel_su3_mm.cc: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
-	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_mm -P$(bagelTargetName) > $@
