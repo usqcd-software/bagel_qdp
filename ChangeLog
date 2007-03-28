@@ -1,3 +1,12 @@
+2007-03-28 13:58  bjoo
+
+	* lib/Makefile.am: Stop building the SU3 stuff for now cos it
+	  doesnt work
+
+2007-03-28 13:19  bjoo
+
+	* tests/t_blas.cc: OK Go try on a BG/L
+
 2007-03-28 12:22  bjoo
 
 	* aclocal.m4, configure, code_gen/Makefile.am, lib/Makefile.am,
