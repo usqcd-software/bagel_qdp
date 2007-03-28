@@ -1,3 +1,12 @@
+2007-03-28 12:22  bjoo
+
+	* aclocal.m4, configure, code_gen/Makefile.am, lib/Makefile.am,
+	  lib/bagel_qdp.h, tests/t_blas.cc: Try it on a BG/L
+
+2007-03-28 12:22  bjoo
+
+	* code_gen/write_su3_mm.cc: SU3?
+
 2006-06-07 12:48  tag bagel_qdp1-1-7
 
 2006-06-07 12:48  bjoo
