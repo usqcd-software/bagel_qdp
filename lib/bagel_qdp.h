@@ -256,6 +256,11 @@ extern "C" {
 		   Float* y,
 		   int n_4vec);
 
+  void qdp_su3_mm(Float* A,
+		 Float* B,
+		 Float* C,
+		 int n_mat);
+
 };
 
 

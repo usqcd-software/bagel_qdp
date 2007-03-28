@@ -1,6 +1,6 @@
 # Substitutions
 buildCXX = @bagel_CXX@
-buildCXXFLAGS = @bagel_CXXFLAGS@
+buildCXXFLAGS = @bagel_CXXFLAGS@ -I@top_srcdir@/lib -I@top_builddir@/lib
 buildLDFLAGS = @bagel_LDFLAGS@
 buildLIBS = @bagel_LIBS@
 buildLINKFLAGS = $(buildLDFLAGS) $(buildLIBS)
@@ -27,7 +27,8 @@ noinst_PROGRAMS = \
 	write_vxpag5y$(EXEEXT) \
 	write_vg5axpby$(EXEEXT) \
 	write_vaxpbg5iy$(EXEEXT) \
-	write_vxpag5iy$(EXEEXT)
+	write_vxpag5iy$(EXEEXT) \
+	write_su3_mm$(EXEEXT)
 
 write_vaxpy_SOURCES = write_vaxpy.cc
 write_vaxpy$(EXEEXT): write_vaxpy.cc
@@ -85,6 +86,9 @@ write_vaxpbg5iy$(EXEEXT): write_vaxpbg5iy.cc
 
 write_vxpag5iy_SOURCES = write_vxpag5iy.cc
 write_vxpag5iy$(EXEEXT): write_vxpag5iy.cc
+
+write_su3_mm_SOURCES = write_su3_mm.cc
+write_su3_mm$(EXEEXT): write_su3_mm.cc
 
 
 %$(EXEEXT): %.cc
