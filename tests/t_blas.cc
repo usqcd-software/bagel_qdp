@@ -1,4 +1,4 @@
-// $Id: t_blas.cc,v 1.2 2007-03-28 16:22:50 bjoo Exp $
+// $Id: t_blas.cc,v 1.3 2007-03-28 17:19:52 bjoo Exp $
 
 #include <iostream>
 #include <iomanip>
@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
     if (seconds < 1 ) iter *=2;
   }
   while( seconds < 1 );
+  Internal::broadcast(iter);
 
 
   swatch.reset();
@@ -77,8 +78,13 @@ int main(int argc, char *argv[])
     
   }
   swatch.stop(); 
-  
-  QDPIO::cout << "NEW Iterations :" << iter << " Time = " << swatch.getTimeInSeconds() << " s" << endl;
+  seconds = swatch.getTimeInSeconds();
+  sum(seconds);
+  seconds /= Layout::numNodes();
+
+  double flops = iter*180*Layout::sitesOnNode()/1.0e6;
+
+  QDPIO::cout << "New Way: " << seconds << " (s)  " << flops << " MFLOP,  " << flops/seconds << " MFlop/s per process" << endl;
 
   swatch.reset();
   swatch.start();
@@ -86,8 +92,11 @@ int main(int argc, char *argv[])
     a=b*c;
   }
   swatch.stop(); 
-  
-  QDPIO::cout << "OLD Iterations :" << iter << " Time = " << swatch.getTimeInSeconds() << " s" << endl;
+  seconds = swatch.getTimeInSeconds();
+  sum(seconds);
+  seconds /= Layout::numNodes();
+
+  QDPIO::cout << "Old Way: " << seconds << " (s)  " << flops << " MFLOP,  " << flops/seconds << " MFlop/s per process" << endl;
 
   // Time to bolt
   QDP_finalize();
