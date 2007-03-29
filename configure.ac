@@ -35,7 +35,7 @@ AC_ARG_WITH(bagel,
 AC_ARG_WITH(qdp,
 AC_HELP_STRING(
     [--with-qdp=DIR],
-    [Build tests with QDP++ where QDP++ is installed in DIR. Not specifying this will disable tests which you should do if you want to install a production version]
+    [Build tests with QDP++ where qDP++ is installed in DIR. Not specifying this will disable tests which you should do if you want to install a production version]
   ),
   [
    QDPXX_HOME="$with_qdp"
@@ -160,24 +160,24 @@ if test "X${QDP_TEST_ENABLED}X" = "XyesX"; then
   AC_MSG_NOTICE([QDP++ precision: ${QDPXX_PRECISION}])
   dnl This function is defined in acinclude.m4
   dnl it tries to try to compile the program
-  AC_MSG_CHECKING([if we can compile/link a simple QDP++ program])
-  PAC_QDPXX_LINK_CXX_FUNC(
-    ${QDPXX_CXX},
-    ${QDPXX_CXXFLAGS},
-    ${QDPXX_LDFLAGS},
-    ${QDPXX_LIBS},
-    ,
-    ,
-    [qdpxx_link_ok=yes],
-    [qdpxx_link_ok=no]
-  )
-  if test "X${qdpxx_link_ok}X" = "XyesX" ; then
-    AC_MSG_RESULT(yes)
-  else
-    AC_MSG_RESULT(no)
-    AC_MSG_ERROR([Cannot compile/link a program with QDP++.
-      Use --with-qdp++=<dir> to select a working version.])
-  fi
+dnl  AC_MSG_CHECKING([if we can compile/link a simple QDP++ program])
+dnl  PAC_QDPXX_LINK_CXX_FUNC(
+dnl    ${QDPXX_CXX},
+dnl    ${QDPXX_CXXFLAGS},
+dnl    ${QDPXX_LDFLAGS},
+dnl    ${QDPXX_LIBS},
+dnl    ,
+dnl    ,
+dnl    [qdpxx_link_ok=yes],
+dnl    [qdpxx_link_ok=no]
+dnl  )
+dnl  if test "X${qdpxx_link_ok}X" = "XyesX" ; then
+dnl    AC_MSG_RESULT(yes)
+dnl  else
+dnl    AC_MSG_RESULT(no)
+dnl    AC_MSG_ERROR([Cannot compile/link a program with QDP++.
+dnl      Use --with-qdp++=<dir> to select a working version.])
+dnl  fi
 else 
      dnl QDP is disabled
      AC_SUBST(QDPXX_CXX, "")

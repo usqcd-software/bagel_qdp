@@ -19,6 +19,8 @@
 
 #include "registers.h"
 
+extern struct rotating_reg *CMADregs;
+
 
 void bagel_su3( char *);
 
@@ -167,14 +169,19 @@ void bagel_su3(char *name)
   alreg(counter,Iregs);
 
   /*Floating register usage*/
-  reg_array_1d(A,Cregs,3);
-  reg_array_1d(B,Cregs,3);
-  reg_array_2d(C,Cregs,3,3);
+  reg_array_1d(B,Cregs,3); // One row of B
 
+  /* Rotating registers for C and A. Overallocate for good 
+     rotation */
+  
+  struct rotating_reg *Creg = create_rotating_reg(Cregs,4,"Creg"); 
+  struct rotating_reg *Areg = create_rotating_reg(Cregs,4,"Areg"); 
+  
+  /* Register array offset -- 3 complexes Used to index B */
   offset_2d(ROW,GaugeType,3,2);
-  offset_3d(MATRIX,GaugeType, 3,3,2);
+  offset_3d(MATRIX, GaugeType, 3, 3, 2);
 
-  struct stream *PreA;
+  struct stream *PreA; /* Prefetching */
   struct stream *PreB;
   struct stream *PreC;
 
@@ -190,10 +197,11 @@ void bagel_su3(char *name)
   getarg(Cptr);           /*Get args*/
   getarg(counter);
 
+  /* Prefetch offsets */
   def_off(MATRIX_ATOM, GaugeType, 18);
   def_off(ROW_ATOM, GaugeType, 6);
 
-  PreA = create_stream(ROW_ATOM, Aptr,3*counter,STREAM_OUT,LINEAR);
+  PreA = create_stream(MATRIX_ATOM, Aptr,counter,STREAM_OUT,LINEAR);
   PreB= create_stream(ROW_ATOM,  Bptr, 3*counter, STREAM_IN ,LINEAR);
   PreC= create_stream(MATRIX_ATOM, Cptr, counter, STREAM_IN ,LINEAR);
 
@@ -209,108 +217,175 @@ void bagel_su3(char *name)
 
   brchno = start_loop(counter);
 
-  // Load C
-  for(int row =0; row < 3; row++) { 
-    for(int col=0; col < 3; col++) { 
-      complex_load(C[row][col], MATRIX[row][col][0], Cptr);
-    }
+
+  
+  // Load B 
+  for(int col=0; col < 3; col++) { 
+    complex_load(B[col], ROW[col][0], Bptr, GaugeType);
   }
-  iterate_stream(PreC);
+  iterate_stream(PreB);
+
+  /*
+   *     A[i,0,0]  = B[i, 0, 0] * C[i, 0, 0]
+   *     A[i,0,0] += B[i, 0, 1] * C[i, 1, 0]
+   *     A[i,0,0] += B[i, 0, 2] * C[i, 2, 0]
+
+   *     A[i,0,1]  = B[i, 0, 0] * C[i, 0, 1]
+   *     A[i,0,1] += B[i, 0, 1] * C[i, 1, 1]
+   *     A[i,0,1] += B[i, 0, 2] * C[i, 2, 1]
+
+   *     A[i,0,2]  = B[i, 0, 0] * C[i, 0, 2]
+   *     A[i,0,2] += B[i, 0, 1] * C[i, 1, 2]
+   *     A[i,0,2] += B[i, 0, 2] * C[i, 2, 2]
+   */
+
+  /* Get a complex register pair for A[i,0,0] */
+  int areg, creg;
+
+  areg = get_rotating_register(Areg);
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[0][0][0], Cptr, GaugeType);
+  complex_mul(areg, B[0], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[1][0][0], Cptr, GaugeType);
+  complex_madd(areg, B[1], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[2][0][0], Cptr, GaugeType);
+  complex_madd(areg, B[2], creg);
+  complex_store(areg, MATRIX[0][0][0], Aptr, GaugeType);
+
+
+  areg = get_rotating_register(Areg);
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[0][1][0], Cptr, GaugeType);
+  complex_mul(areg, B[0], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[1][1][0], Cptr, GaugeType);
+  complex_madd(areg, B[1], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[2][1][0], Cptr, GaugeType);
+  complex_madd(areg, B[2], creg);
+  complex_store(areg, MATRIX[0][1][0], Aptr, GaugeType);
+
+  areg = get_rotating_register(Areg);
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[0][2][0], Cptr, GaugeType);
+  complex_mul(areg, B[0], creg);
+ 
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[1][2][0], Cptr, GaugeType);
+  complex_madd(areg, B[1], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[2][2][0], Cptr, GaugeType);
+  complex_madd(areg, B[2], creg);
+  complex_store(areg, MATRIX[0][2][0], Aptr, GaugeType);
 
   // Load B 
   for(int col=0; col < 3; col++) { 
-    complex_load(B[col], ROW[col][0], Bptr);
+    complex_load(B[col], ROW[col][0], Bptr, GaugeType);
   }
   iterate_stream(PreB);
-  /*
-   *     A[i,0,0]  = B[i, 0, 0] * C[i, 0, 0]
-   *     A[i,0,1]  = B[i, 0, 0] * C[i, 0, 1]
-   *     A[i,0,2]  = B[i, 0, 0] * C[i, 0, 2]
-   *     A[i,0,0] += B[i, 0, 1] * C[i, 1, 0]
-   *     A[i,0,1] += B[i, 0, 1] * C[i, 1, 1]
-   *     A[i,0,2] += B[i, 0, 1] * C[i, 1, 2]
-   *     A[i,0,0] += B[i, 0, 2] * C[i, 2, 0]
-   *     A[i,0,1] += B[i, 0, 2] * C[i, 2, 1]
-   *     A[i,0,2] += B[i, 0, 2] * C[i, 2, 2]
-   */
-  complex_mul(A[0], B[0], C[0][0]);
-  complex_mul(A[1], B[0], C[0][1]);
-  complex_mul(A[2], B[0], C[0][2]);
-  complex_madd(A[0], B[1], C[1][0]);
-  complex_madd(A[1], B[1], C[1][1]);
-  complex_madd(A[2], B[1], C[1][2]);
-  complex_madd(A[0], B[2], C[2][0]);
-  complex_madd(A[1], B[2], C[2][1]);
-  complex_madd(A[2], B[2], C[2][2]);
 
-  for(int col=0; col < 3; col++) {
-    complex_store(A[col], ROW[col][0], Aptr);
-  }
-  iterate_stream(PreA);
+  areg = get_rotating_register(Areg);
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[0][0][0], Cptr, GaugeType);
+  complex_mul(areg, B[0], creg);
 
-  // Next row of B
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[1][0][0], Cptr, GaugeType);
+  complex_madd(areg, B[1], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[2][0][0], Cptr, GaugeType);
+  complex_madd(areg, B[2], creg);
+  complex_store(areg, MATRIX[1][0][0], Aptr, GaugeType);
+
+
+  areg = get_rotating_register(Areg);
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[0][1][0], Cptr, GaugeType);
+  complex_mul(areg, B[0], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[1][1][0], Cptr, GaugeType);
+  complex_madd(areg, B[1], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[2][1][0], Cptr, GaugeType);
+  complex_madd(areg, B[2], creg);
+  complex_store(areg, MATRIX[1][1][0], Aptr, GaugeType);
+
+  areg = get_rotating_register(Areg);
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[0][2][0], Cptr, GaugeType);
+  complex_mul(areg, B[0], creg);
+ 
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[1][2][0], Cptr, GaugeType);
+  complex_madd(areg, B[1], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[2][2][0], Cptr, GaugeType);
+  complex_madd(areg, B[2], creg);
+  complex_store(areg, MATRIX[1][2][0], Aptr, GaugeType);
+
+  // Load B 
   for(int col=0; col < 3; col++) { 
-    complex_load(B[col], ROW[col][0], Bptr);
+    complex_load(B[col], ROW[col][0], Bptr, GaugeType);
   }
   iterate_stream(PreB);
 
-  /*
-   *     A[i,0,0]  = B[i, 0, 0] * C[i, 0, 0]
-   *     A[i,0,1]  = B[i, 0, 0] * C[i, 0, 1]
-   *     A[i,0,2]  = B[i, 0, 0] * C[i, 0, 2]
-   *     A[i,0,0] += B[i, 0, 1] * C[i, 1, 0]
-   *     A[i,0,1] += B[i, 0, 1] * C[i, 1, 1]
-   *     A[i,0,2] += B[i, 0, 1] * C[i, 1, 2]
-   *     A[i,0,0] += B[i, 0, 2] * C[i, 2, 0]
-   *     A[i,0,1] += B[i, 0, 2] * C[i, 2, 1]
-   *     A[i,0,2] += B[i, 0, 2] * C[i, 2, 2]
-   */
-  complex_mul(A[0], B[0], C[0][0]);
-  complex_mul(A[1], B[0], C[0][1]);
-  complex_mul(A[2], B[0], C[0][2]);
-  complex_madd(A[0], B[1], C[1][0]);
-  complex_madd(A[1], B[1], C[1][1]);
-  complex_madd(A[2], B[1], C[1][2]);
-  complex_madd(A[0], B[2], C[2][0]);
-  complex_madd(A[1], B[2], C[2][1]);
-  complex_madd(A[2], B[2], C[2][2]);
+  areg = get_rotating_register(Areg);
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[0][0][0], Cptr, GaugeType);
+  complex_mul(areg, B[0], creg);
 
-  for(int col=0; col < 3; col++) {
-    complex_store(A[col], ROW[col][0], Aptr);
-  }
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[1][0][0], Cptr, GaugeType);
+  complex_madd(areg, B[1], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[2][0][0], Cptr, GaugeType);
+  complex_madd(areg, B[2], creg);
+  complex_store(areg, MATRIX[2][0][0], Aptr, GaugeType);
+
+
+  areg = get_rotating_register(Areg);
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[0][1][0], Cptr, GaugeType);
+  complex_mul(areg, B[0], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[1][1][0], Cptr, GaugeType);
+  complex_madd(areg, B[1], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[2][1][0], Cptr, GaugeType);
+  complex_madd(areg, B[2], creg);
+  complex_store(areg, MATRIX[2][1][0], Aptr, GaugeType);
+
+  areg = get_rotating_register(Areg);
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[0][2][0], Cptr, GaugeType);
+  complex_mul(areg, B[0], creg);
+ 
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[1][2][0], Cptr, GaugeType);
+  complex_madd(areg, B[1], creg);
+
+  creg = get_rotating_register(Creg);
+  complex_load(creg, MATRIX[2][2][0], Cptr, GaugeType);
+  complex_madd(areg, B[2], creg);
+  complex_store(areg, MATRIX[2][2][0], Aptr, GaugeType);
+
+
   iterate_stream(PreA);
-
-  // Next row of B
-  for(int col=0; col < 3; col++) { 
-    complex_load(B[col], ROW[col][0], Bptr);
-  }
-  iterate_stream(PreB);
-
-  /*
-   *     A[i,0,0]  = B[i, 0, 0] * C[i, 0, 0]
-   *     A[i,0,1]  = B[i, 0, 0] * C[i, 0, 1]
-   *     A[i,0,2]  = B[i, 0, 0] * C[i, 0, 2]
-q   *     A[i,0,0] += B[i, 0, 1] * C[i, 1, 0]
-   *     A[i,0,1] += B[i, 0, 1] * C[i, 1, 1]
-   *     A[i,0,2] += B[i, 0, 1] * C[i, 1, 2]
-   *     A[i,0,0] += B[i, 0, 2] * C[i, 2, 0]
-   *     A[i,0,1] += B[i, 0, 2] * C[i, 2, 1]
-   *     A[i,0,2] += B[i, 0, 2] * C[i, 2, 2]
-   */
-  complex_mul(A[0], B[0], C[0][0]);
-  complex_mul(A[1], B[0], C[0][1]);
-  complex_mul(A[2], B[0], C[0][2]);
-  complex_madd(A[0], B[1], C[1][0]);
-  complex_madd(A[1], B[1], C[1][1]);
-  complex_madd(A[2], B[1], C[1][2]);
-  complex_madd(A[0], B[2], C[2][0]);
-  complex_madd(A[1], B[2], C[2][1]);
-  complex_madd(A[2], B[2], C[2][2]);
-
-  for(int col=0; col < 3; col++) {
-    complex_store(A[col], ROW[col][0], Aptr);
-  }
-  iterate_stream(PreA);
+  iterate_stream(PreC);
 
 
   stop_loop(brchno,counter);
@@ -324,7 +399,7 @@ q   *     A[i,0,0] += B[i, 0, 1] * C[i, 1, 0]
 
   return;
 }
-
+ 
 
 
 

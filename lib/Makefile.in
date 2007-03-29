@@ -81,7 +81,7 @@ am__objects_1 = bagel_vaxpy3.$(OBJEXT) bagel_vaxmy3.$(OBJEXT) \
 	bagel_vxmag5y.$(OBJEXT) bagel_vg5axpby.$(OBJEXT) \
 	bagel_vg5axmby.$(OBJEXT) bagel_vaxpbg5iy.$(OBJEXT) \
 	bagel_vaxmbg5iy.$(OBJEXT) bagel_vxpag5iy.$(OBJEXT) \
-	bagel_vxmag5iy.$(OBJEXT)
+	bagel_vxmag5iy.$(OBJEXT) bagel_su3_mm.$(OBJEXT)
 am__objects_2 = noarch_bagel_vaxpy3.$(OBJEXT) \
 	noarch_bagel_vaxmy3.$(OBJEXT) noarch_bagel_vaxpby3.$(OBJEXT) \
 	noarch_bagel_vaxmby3.$(OBJEXT) noarch_bagel_vadd3.$(OBJEXT) \
@@ -295,7 +295,8 @@ arch_sources = \
 	bagel_vaxpbg5iy.S \
 	bagel_vaxmbg5iy.S \
 	bagel_vxpag5iy.S \
-	bagel_vxmag5iy.S
+	bagel_vxmag5iy.S \
+	bagel_su3_mm.S
 
 
 # Noarch architectures
@@ -868,6 +869,9 @@ bagel_vxpag5iy.S: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 bagel_vxmag5iy.S: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) -m -nqdp_vxmag5iy -P$(bagelTargetName) > $@
 
+bagel_su3_mm.S: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_mm -P$(bagelTargetName) > $@
+
 ########## NOARCH TARGETS ##############################
 
 noarch_bagel_vaxpy3.cc: $(bagelWriterDir)/write_vaxpy$(EXEEXT)
@@ -991,6 +995,9 @@ noarch_bagel_vxpag5iy.cc: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 
 noarch_bagel_vxmag5iy.cc: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) -m -nqdp_vxmag5iy -P$(bagelTargetName) > $@
+
+noarch_bagel_su3_mm.cc: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_mm -P$(bagelTargetName) > $@
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
