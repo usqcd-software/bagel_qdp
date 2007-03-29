@@ -50,8 +50,7 @@ arch_sources =  \
 	bagel_vaxpbg5iy.S \
 	bagel_vaxmbg5iy.S \
 	bagel_vxpag5iy.S \
-	bagel_vxmag5iy.S \
-	bagel_su3_mm.S
+	bagel_vxmag5iy.S
 
 # Noarch architectures
 noarch_sources = \
@@ -95,8 +94,7 @@ noarch_sources = \
 	noarch_bagel_vaxpbg5iy.cc \
 	noarch_bagel_vaxmbg5iy.cc \
 	noarch_bagel_vxpag5iy.cc \
-	noarch_bagel_vxmag5iy.cc \
-	noarch_bagel_su3_mm.cc
+	noarch_bagel_vxmag5iy.cc
 
 # Conditional definition of extra sources
 if BUILD_ARCH_SOURCES

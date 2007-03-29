@@ -81,7 +81,7 @@ am__objects_1 = bagel_vaxpy3.$(OBJEXT) bagel_vaxmy3.$(OBJEXT) \
 	bagel_vxmag5y.$(OBJEXT) bagel_vg5axpby.$(OBJEXT) \
 	bagel_vg5axmby.$(OBJEXT) bagel_vaxpbg5iy.$(OBJEXT) \
 	bagel_vaxmbg5iy.$(OBJEXT) bagel_vxpag5iy.$(OBJEXT) \
-	bagel_vxmag5iy.$(OBJEXT) bagel_su3_mm.$(OBJEXT)
+	bagel_vxmag5iy.$(OBJEXT)
 am__objects_2 = noarch_bagel_vaxpy3.$(OBJEXT) \
 	noarch_bagel_vaxmy3.$(OBJEXT) noarch_bagel_vaxpby3.$(OBJEXT) \
 	noarch_bagel_vaxmby3.$(OBJEXT) noarch_bagel_vadd3.$(OBJEXT) \
@@ -117,7 +117,7 @@ am__objects_2 = noarch_bagel_vaxpy3.$(OBJEXT) \
 	noarch_bagel_vaxpbg5iy.$(OBJEXT) \
 	noarch_bagel_vaxmbg5iy.$(OBJEXT) \
 	noarch_bagel_vxpag5iy.$(OBJEXT) \
-	noarch_bagel_vxmag5iy.$(OBJEXT) noarch_bagel_su3_mm.$(OBJEXT)
+	noarch_bagel_vxmag5iy.$(OBJEXT)
 @BUILD_ARCH_SOURCES_FALSE@@BUILD_NOARCH_SOURCES_TRUE@am__objects_3 = $(am__objects_2)
 @BUILD_ARCH_SOURCES_TRUE@am__objects_3 = $(am__objects_1)
 nodist_libbagel_qdp_a_OBJECTS = $(am__objects_3)
@@ -295,8 +295,7 @@ arch_sources = \
 	bagel_vaxpbg5iy.S \
 	bagel_vaxmbg5iy.S \
 	bagel_vxpag5iy.S \
-	bagel_vxmag5iy.S \
-	bagel_su3_mm.S
+	bagel_vxmag5iy.S
 
 
 # Noarch architectures
@@ -341,8 +340,7 @@ noarch_sources = \
 	noarch_bagel_vaxpbg5iy.cc \
 	noarch_bagel_vaxmbg5iy.cc \
 	noarch_bagel_vxpag5iy.cc \
-	noarch_bagel_vxmag5iy.cc \
-	noarch_bagel_su3_mm.cc
+	noarch_bagel_vxmag5iy.cc
 
 
 # Conditional definition of extra sources
@@ -475,7 +473,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_local_sumsq.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_local_vcdot.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_local_vcdot_real.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_su3_mm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vadd3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vadd_ch_minus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vadd_ch_plus.Po@am__quote@

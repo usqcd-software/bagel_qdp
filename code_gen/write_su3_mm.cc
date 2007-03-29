@@ -42,6 +42,7 @@ int main ( int argc, char *argv[])
 {
   int arg;
   char *c;
+  name[0]='\0';
 
   /*Process command line*/
   while ( ( arg = getopt(argc,argv,"lrn:P:")) != EOF){
@@ -178,7 +179,13 @@ void bagel_su3(char *name)
   struct rotating_reg *Areg = create_rotating_reg(Cregs,4,"Areg"); 
   
   /* Register array offset -- 3 complexes Used to index B */
-  offset_2d(ROW,GaugeType,3,2);
+  offset_array_2d ROW("ROW", 3, 2, 0, GaugeType);
+  for(int i=0; i< 3; i++) { 
+    for(int j=0; j < 2; j++) { 
+      fprintf(stderr, "ROW[%d][%d]=%d\n", i,j, get_offset(ROW[i][j]));
+    }
+  }
+
   offset_3d(MATRIX, GaugeType, 3, 3, 2);
 
   struct stream *PreA; /* Prefetching */
