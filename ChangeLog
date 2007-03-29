@@ -1,3 +1,8 @@
+2007-03-28 20:14  bjoo
+
+	* configure, configure.ac, code_gen/write_su3_mm.cc,
+	  lib/Makefile.am: Fred
+
 2007-03-28 13:58  bjoo
 
 	* lib/Makefile.am: Stop building the SU3 stuff for now cos it
