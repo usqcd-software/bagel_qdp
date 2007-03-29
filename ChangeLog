@@ -1,3 +1,12 @@
+2007-03-28 21:54  bjoo
+
+	* configure, lib/bagel_qdp.h: Backed out SU3 from the header file
+
+2007-03-28 21:49  bjoo
+
+	* code_gen/write_su3_mm.cc, lib/Makefile.am: Backed out SU3 cos it
+	  dont work on the Bluegene
+
 2007-03-28 20:14  bjoo
 
 	* configure, configure.ac, code_gen/write_su3_mm.cc,
