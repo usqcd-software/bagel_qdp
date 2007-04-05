@@ -50,7 +50,8 @@ arch_sources =  \
 	bagel_vaxpbg5iy.S \
 	bagel_vaxmbg5iy.S \
 	bagel_vxpag5iy.S \
-	bagel_vxmag5iy.S
+	bagel_vxmag5iy.S \
+	bagel_su3_mm.S
 
 # Noarch architectures
 noarch_sources = \
@@ -94,7 +95,8 @@ noarch_sources = \
 	noarch_bagel_vaxpbg5iy.cc \
 	noarch_bagel_vaxmbg5iy.cc \
 	noarch_bagel_vxpag5iy.cc \
-	noarch_bagel_vxmag5iy.cc
+	noarch_bagel_vxmag5iy.cc \
+	noarch_bagel_su3_mm.cc
 
 # Conditional definition of extra sources
 if BUILD_ARCH_SOURCES
@@ -130,7 +132,8 @@ libbagel_qdp_a_DEPENDENCIES= $(extra_sources) \
 	$(bagelWriterDir)/write_vxpag5y$(EXEEXT) \
 	$(bagelWriterDir)/write_vg5axpby$(EXEEXT) \
 	$(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT) \
-	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
+	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) \
+	$(bagelWriterDir)/write_su3_mm$(EXEEXT)
 
 # Funky rules for making the .S and .C sources
 bagelTargetName = @bagel_MUNGED_TARGET@
