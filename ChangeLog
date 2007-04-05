@@ -1,3 +1,12 @@
+2007-04-05 15:32  bjoo
+
+	* lib/Makefile.am: Added change here
+
+2007-04-05 15:31  bjoo
+
+	* code_gen/write_su3_mm.cc: write_su3_mm.cc now produces something
+	  on the BGL
+
 2007-03-28 21:54  bjoo
 
 	* configure, lib/bagel_qdp.h: Backed out SU3 from the header file
