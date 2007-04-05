@@ -1,3 +1,7 @@
+2007-04-05 16:48  bjoo
+
+	* code_gen/write_su3_ma.cc: First scratch
+
 2007-04-05 15:32  bjoo
 
 	* lib/Makefile.am: Added change here
