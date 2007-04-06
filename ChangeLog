@@ -1,3 +1,8 @@
+2007-04-06 17:09  bjoo
+
+	* configure, code_gen/Makefile.am, code_gen/write_su3_ma.cc,
+	  lib/Makefile.am, lib/bagel_qdp.h: Changes to bagel_qdp
+
 2007-04-05 16:48  bjoo
 
 	* code_gen/write_su3_ma.cc: First scratch
