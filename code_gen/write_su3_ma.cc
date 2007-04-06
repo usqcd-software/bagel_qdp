@@ -82,81 +82,50 @@ int main ( int argc, char *argv[])
 
    * for(i=0;i<nvec-1;i++) {
    *     A[i,0,0]  = B[i, 0, 0] * C[i, 0, 0]
-   *     A[i,0,1]  = B[i, 0, 0] * C[i, 0, 1]
-   *     A[i,0,2]  = B[i, 0, 0] * C[i, 0, 2]
-   *     A[i,0,0] += B[i, 0, 1] * C[i, 1, 0]
+   *     A[i,0,0] += B[i, 0, 1] * C[i, 0, 1]
+   *     A[i,0,0] += B[i, 0, 2] * C[i, 0, 2]
+
+   *     A[i,0,1]  = B[i, 0, 0] * C[i, 1, 0]
    *     A[i,0,1] += B[i, 0, 1] * C[i, 1, 1]
-   *     A[i,0,2] += B[i, 0, 1] * C[i, 1, 2]
-   *     A[i,0,0] += B[i, 0, 2] * C[i, 2, 0]
-   *     A[i,0,1] += B[i, 0, 2] * C[i, 2, 1]
+   *     A[i,0,1] += B[i, 0, 2] * C[i, 1, 2]
+
+   *     A[i,0,2]  = B[i, 0, 0] * C[i, 2, 0]
+   *     A[i,0,2] += B[i, 0, 1] * C[i, 2, 1]
    *     A[i,0,2] += B[i, 0, 2] * C[i, 2, 2]
    *     Steram out A[i,0,:]
 
-   *     Load B[i, 1, :]
    *     A[i,1,0]  = B[i, 1, 0] * C[i, 0, 0]
-   *     A[i,1,1]  = B[i, 1, 0] * C[i, 0, 1]
-   *     A[i,1,2]  = B[i, 1, 0] * C[i, 0, 2]
-   *     A[i,1,0] += B[i, 1, 1] * C[i, 1, 0]
+   *     A[i,1,0] += B[i, 1, 1] * C[i, 0, 1]
+   *     A[i,1,0] += B[i, 1, 2] * C[i, 0, 2]
+
+   *     A[i,1,1]  = B[i, 1, 0] * C[i, 1, 0]
    *     A[i,1,1] += B[i, 1, 1] * C[i, 1, 1]
-   *     A[i,1,2] += B[i, 1, 1] * C[i, 1, 2]
-   *     A[i,1,0] += B[i, 1, 2] * C[i, 2, 0]
-   *     A[i,1,1] += B[i, 1, 2] * C[i, 2, 1]
+   *     A[i,1,1] += B[i, 1, 2] * C[i, 1, 2]
+
+   *     A[i,1,2]  = B[i, 1, 0] * C[i, 2, 0]
+   *     A[i,1,2] += B[i, 1, 1] * C[i, 2, 1]
    *     A[i,1,2] += B[i, 1, 2] * C[i, 2, 2]
    *     Stream out A[i,1,:]
 
    *     Load B[i, 2, :]
    *     A[i,2,0]  = B[i, 2, 0] * C[i, 0, 0]
-   *     A[i,2,1]  = B[i, 2, 0] * C[i, 0, 1]
-   *     A[i,2,2]  = B[i, 2, 0] * C[i, 0, 2]
-   *     A[i,2,0] += B[i, 2, 1] * C[i, 1, 0]
+   *     A[i,2,0] += B[i, 2, 1] * C[i, 0, 1]
+   *     A[i,2,0] += B[i, 2, 2] * C[i, 0, 2]
+
+   *     A[i,2,1]  = B[i, 2, 0] * C[i, 1, 0]
    *     A[i,2,1] += B[i, 2, 1] * C[i, 1, 1]
-   *     A[i,2,2] += B[i, 2, 1] * C[i, 1, 2]
-   *     A[i,2,0] += B[i, 2, 2] * C[i, 2, 0]
-   *     A[i,2,1] += B[i, 2, 2] * C[i, 2, 1]
+   *     A[i,2,1] += B[i, 2, 2] * C[i, 1, 2]
+
+   *     A[i,2,2]  = B[i, 2, 0] * C[i, 2, 0]
+   *     A[i,2,2] += B[i, 2, 1] * C[i, 2, 1]
    *     A[i,2,2] += B[i, 2, 2] * C[i, 2, 2]
    *     Stream out A[i,2,:]
+
+
    *     Load C[i+1, :, :] - 18 regs 
    *     Load B[i+1, 0, :]  - 6 regs 
    *
    *  }
-   *
-   *  A[nvec-1,0,0]  = B[nvec-1, 0, 0] * C[nvec-1, 0, 0]
-   *  A[nvec-1,0,1]  = B[nvec-1, 0, 0] * C[nvec-1, 0, 1]
-   *  A[nvec-1,0,2]  = B[nvec-1, 0, 0] * C[nvec-1, 0, 2]
-   *  A[nvec-1,0,0] += B[nvec-1, 0, 1] * C[nvec-1, 1, 0]
-   *  A[nvec-1,0,1] += B[nvec-1, 0, 1] * C[nvec-1, 1, 1]
-   *  A[nvec-1,0,2] += B[nvec-1, 0, 1] * C[nvec-1, 1, 2]
-   *  A[nvec-1,0,0] += B[nvec-1, 0, 2] * C[nvec-1, 2, 0]
-   *  A[nvec-1,0,1] += B[nvec-1, 0, 2] * C[nvec-1, 2, 1]
-   *  A[nvec-1,0,2] += B[nvec-1, 0, 2] * C[nvec-1, 2, 2]
-   *  Steram out A[nvec-1,0,:]
-
-   *  Load B[nvec-1, 1, :]
-   *  A[nvec-1,1,0]  = B[nvec-1, 1, 0] * C[nvec-1, 0, 0]
-   *  A[nvec-1,1,1]  = B[nvec-1, 1, 0] * C[nvec-1, 0, 1]
-   *  A[nvec-1,1,2]  = B[nvec-1, 1, 0] * C[nvec-1, 0, 2]
-   *  A[nvec-1,1,0] += B[nvec-1, 1, 1] * C[nvec-1, 1, 0]
-   *  A[nvec-1,1,1] += B[nvec-1, 1, 1] * C[nvec-1, 1, 1]
-   *  A[nvec-1,1,2] += B[nvec-1, 1, 1] * C[nvec-1, 1, 2]
-   *  A[nvec-1,1,0] += B[nvec-1, 1, 2] * C[nvec-1, 2, 0]
-   *  A[nvec-1,1,1] += B[nvec-1, 1, 2] * C[nvec-1, 2, 1]
-   *  A[nvec-1,1,2] += B[nvec-1, 1, 2] * C[nvec-1, 2, 2]
-   *  Stream out A[nvec-1,1,:]
-
-   *  Load B[nvec-1, 2, :]
-   *  A[nvec-1,2,0]  = B[nvec-1, 2, 0] * C[nvec-1, 0, 0]
-   *  A[nvec-1,2,1]  = B[nvec-1, 2, 0] * C[nvec-1, 0, 1]
-   *  A[nvec-1,2,2]  = B[nvec-1, 2, 0] * C[nvec-1, 0, 2]
-   *  A[nvec-1,2,0] += B[nvec-1, 2, 1] * C[nvec-1, 1, 0]
-   *  A[nvec-1,2,1] += B[nvec-1, 2, 1] * C[nvec-1, 1, 1]
-   *  A[nvec-1,2,2] += B[nvec-1, 2, 1] * C[nvec-1, 1, 2]
-   *  A[nvec-1,2,0] += B[nvec-1, 2, 2] * C[nvec-1, 2, 0]
-   *  A[nvec-1,2,1] += B[nvec-1, 2, 2] * C[nvec-1, 2, 1]
-   *  A[nvec-1,2,2] += B[nvec-1, 2, 2] * C[nvec-1, 2, 2]
-   *  Stream out A[nvec-1,2,:]
-
-   * }
-   *
    */
 
 void bagel_su3(char *name)
@@ -232,20 +201,19 @@ void bagel_su3(char *name)
     complex_load(B2, ROW[2][0], Bptr, GaugeType);
     iterate_stream(PreB);
 
+    /*
+     *     A[i,0,0]  = B[i, 0, 0] * C[i, 0, 0]
+     *     A[i,0,0] += B[i, 0, 1] * C[i, 0, 1]
+     *     A[i,0,0] += B[i, 0, 2] * C[i, 0, 2]
 
-  /*
-   *     A[i,0,0]  = B[i, 0, 0] * C[i, 0, 0]
-   *     A[i,0,0] += B[i, 0, 1] * C[i, 0, 1]
-   *     A[i,0,0] += B[i, 0, 2] * C[i, 0, 2]
-
-   *     A[i,0,1]  = B[i, 0, 0] * C[i, 1, 0]
-   *     A[i,0,1] += B[i, 0, 1] * C[i, 1, 1]
-   *     A[i,0,1] += B[i, 0, 2] * C[i, 1, 2]
-
-   *     A[i,0,2]  = B[i, 0, 0] * C[i, 2, 0]
-   *     A[i,0,2] += B[i, 0, 1] * C[i, 2, 1]
-   *     A[i,0,2] += B[i, 0, 2] * C[i, 2, 2]
-   */
+     *     A[i,0,1]  = B[i, 0, 0] * C[i, 1, 0]
+     *     A[i,0,1] += B[i, 0, 1] * C[i, 1, 1]
+     *     A[i,0,1] += B[i, 0, 2] * C[i, 1, 2]
+     
+     *     A[i,0,2]  = B[i, 0, 0] * C[i, 2, 0]
+     *     A[i,0,2] += B[i, 0, 1] * C[i, 2, 1]
+     *     A[i,0,2] += B[i, 0, 2] * C[i, 2, 2]
+     */
 
   /* Get a complex register pair for A[i,0,0] */
   int areg, creg;
@@ -253,46 +221,46 @@ void bagel_su3(char *name)
   areg = get_rotating_register(Areg);
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[0][0][0], Cptr, GaugeType);
-  complex_conjmul(areg, creg, B0);
+  complex_conjmul(areg, creg,B0);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[0][1][0], Cptr, GaugeType);
-  complex_conjmadd(areg, creg, B1);
+  complex_conjmadd(areg, creg,B1);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[0][2][0], Cptr, GaugeType);
-  complex_conjmadd(areg, creg, B2);
-
+  complex_conjmadd(areg, creg,B2);
   complex_store(areg, MATRIX[0][0][0], Aptr, GaugeType);
 
 
   areg = get_rotating_register(Areg);
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[1][0][0], Cptr, GaugeType);
-  complex_conjmul(areg, creg, B0);
+  complex_conjmul(areg, creg,B0);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[1][1][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B1, creg);
+  complex_conjmadd(areg, creg,B1);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[1][2][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B2, creg);
+  complex_conjmadd(areg, creg,B2);
   complex_store(areg, MATRIX[0][1][0], Aptr, GaugeType);
 
   areg = get_rotating_register(Areg);
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[2][0][0], Cptr, GaugeType);
-  complex_conjmul(areg, B0, creg);
+  complex_conjmul(areg, creg,B0);
  
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[2][1][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B1, creg);
+  complex_conjmadd(areg, creg,B1);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[2][2][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B2, creg);
+  complex_conjmadd(areg, creg,B2);
   complex_store(areg, MATRIX[0][2][0], Aptr, GaugeType);
+
 
   // Load B 
   complex_load(B0, ROW[0][0], Bptr, GaugeType);
@@ -303,15 +271,15 @@ void bagel_su3(char *name)
   areg = get_rotating_register(Areg);
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[0][0][0], Cptr, GaugeType);
-  complex_conjmul(areg, creg, B0);
+  complex_conjmul(areg, creg,B0);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[0][1][0], Cptr, GaugeType);
-  complex_conjmadd(areg, creg, B1);
+  complex_conjmadd(areg, creg,B1);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[0][2][0], Cptr, GaugeType);
-  complex_conjmadd(areg, creg, B2);
+  complex_conjmadd(areg, creg,B2);
 
   complex_store(areg, MATRIX[1][0][0], Aptr, GaugeType);
 
@@ -319,29 +287,30 @@ void bagel_su3(char *name)
   areg = get_rotating_register(Areg);
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[1][0][0], Cptr, GaugeType);
-  complex_conjmul(areg, creg, B0);
+  complex_conjmul(areg, creg,B0);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[1][1][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B1, creg);
+  complex_conjmadd(areg, creg,B1);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[1][2][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B2, creg);
+  complex_conjmadd(areg, creg,B2);
+
   complex_store(areg, MATRIX[1][1][0], Aptr, GaugeType);
 
   areg = get_rotating_register(Areg);
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[2][0][0], Cptr, GaugeType);
-  complex_conjmul(areg, B0, creg);
+  complex_conjmul(areg, creg,B0);
  
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[2][1][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B1, creg);
+  complex_conjmadd(areg, creg,B1);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[2][2][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B2, creg);
+  complex_conjmadd(areg, creg,B2);
   complex_store(areg, MATRIX[1][2][0], Aptr, GaugeType);
 
   // Load B 
@@ -353,15 +322,15 @@ void bagel_su3(char *name)
   areg = get_rotating_register(Areg);
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[0][0][0], Cptr, GaugeType);
-  complex_conjmul(areg, creg, B0);
+  complex_conjmul(areg, creg,B0);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[0][1][0], Cptr, GaugeType);
-  complex_conjmadd(areg, creg, B1);
+  complex_conjmadd(areg, creg,B1);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[0][2][0], Cptr, GaugeType);
-  complex_conjmadd(areg, creg, B2);
+  complex_conjmadd(areg, creg,B2);
 
   complex_store(areg, MATRIX[2][0][0], Aptr, GaugeType);
 
@@ -369,29 +338,29 @@ void bagel_su3(char *name)
   areg = get_rotating_register(Areg);
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[1][0][0], Cptr, GaugeType);
-  complex_conjmul(areg, creg, B0);
+  complex_conjmul(areg, creg,B0);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[1][1][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B1, creg);
+  complex_conjmadd(areg, creg,B1);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[1][2][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B2, creg);
+  complex_conjmadd(areg, creg,B2);
   complex_store(areg, MATRIX[2][1][0], Aptr, GaugeType);
 
   areg = get_rotating_register(Areg);
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[2][0][0], Cptr, GaugeType);
-  complex_conjmul(areg, B0, creg);
+  complex_conjmul(areg, creg,B0);
  
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[2][1][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B1, creg);
+  complex_conjmadd(areg, creg,B1);
 
   creg = get_rotating_register(Creg);
   complex_load(creg, MATRIX[2][2][0], Cptr, GaugeType);
-  complex_conjmadd(areg, B2, creg);
+  complex_conjmadd(areg, creg,B2);
   complex_store(areg, MATRIX[2][2][0], Aptr, GaugeType);
  
   iterate_stream(PreA);

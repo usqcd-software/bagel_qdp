@@ -255,12 +255,17 @@ extern "C" {
 		   Float* x,
 		   Float* y,
 		   int n_4vec);
-#if 0
+
   void qdp_su3_mm(Float* A,
 		 Float* B,
 		 Float* C,
 		 int n_mat);
-#endif
+
+  void qdp_su3_ma(Float* A,
+		  Float* B,
+		  Float* C,
+		  int n_mat);
+
 };
 
 
