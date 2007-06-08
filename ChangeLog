@@ -1,3 +1,8 @@
+2007-06-08 16:08  bjoo
+
+	* code_gen/write_su3_mm.cc, lib/Makefile.am, lib/bagel_qdp.h: added
+	  Su3 routines
+
 2007-04-06 17:09  bjoo
 
 	* configure, code_gen/Makefile.am, code_gen/write_su3_ma.cc,
