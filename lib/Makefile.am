@@ -52,7 +52,9 @@ arch_sources =  \
 	bagel_vxpag5iy.S \
 	bagel_vxmag5iy.S \
 	bagel_su3_mm.S \
-	bagel_su3_ma.S
+	bagel_su3_am.S \
+	bagel_su3_ma.S \
+	bagel_su3_aa.S
 
 # Noarch architectures
 noarch_sources = \
@@ -98,7 +100,9 @@ noarch_sources = \
 	noarch_bagel_vxpag5iy.cc \
 	noarch_bagel_vxmag5iy.cc \
 	noarch_bagel_su3_mm.cc \
-	noarch_bagel_su3_ma.cc
+	noarch_bagel_su3_ma.cc \
+	noarch_bagel_su3_am.cc \
+	noarch_bagel_su3_aa.cc
 
 # Conditional definition of extra sources
 if BUILD_ARCH_SOURCES
@@ -272,8 +276,14 @@ bagel_vxmag5iy.S: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 bagel_su3_mm.S: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
 	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_mm -P$(bagelTargetName) > $@
 
-bagel_su3_ma.S: $(bagelWriterDir)/write_su3_ma$(EXEEXT)
-	$(bagelWriterDir)/write_su3_ma$(EXEEXT) -nqdp_su3_ma -P$(bagelTargetName) > $@
+bagel_su3_ma.S: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_ma -H -P$(bagelTargetName) > $@
+
+bagel_su3_am.S: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_am -h -P$(bagelTargetName) > $@
+
+bagel_su3_aa.S: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_aa -h -H -P$(bagelTargetName) > $@
 
 ########## NOARCH TARGETS ##############################
 
@@ -404,5 +414,11 @@ noarch_bagel_vxmag5iy.cc: $(bagelWriterDir)/write_vxpag5iy$(EXEEXT)
 noarch_bagel_su3_mm.cc: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
 	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_mm -P$(bagelTargetName) > $@
 
-noarch_bagel_su3_ma.cc: $(bagelWriterDir)/write_su3_ma$(EXEEXT)
-	$(bagelWriterDir)/write_su3_ma$(EXEEXT) -nqdp_su3_ma -P$(bagelTargetName) > $@
+noarch_bagel_su3_ma.cc: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_ma -H -P$(bagelTargetName) > $@
+
+noarch_bagel_su3_am.cc: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_am -h -P$(bagelTargetName) > $@
+
+noarch_bagel_su3_aa.cc: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_aa -h -H -P$(bagelTargetName) > $@

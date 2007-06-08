@@ -257,14 +257,24 @@ extern "C" {
 		   int n_4vec);
 
   void qdp_su3_mm(Float* A,
-		 Float* B,
-		 Float* C,
-		 int n_mat);
+		  Float* B,
+		  Float* C,
+		  unsigned long n_mat);
 
   void qdp_su3_ma(Float* A,
 		  Float* B,
 		  Float* C,
-		  int n_mat);
+		  unsigned long n_mat);
+
+  void qdp_su3_am(Float* A,
+		  Float* B,
+		  Float* C,
+		  unsigned long n_mat);
+
+  void qdp_su3_aa(Float* A,
+		  Float* B,
+		  Float* C,
+		  unsigned long n_mat);
 
 };
 
