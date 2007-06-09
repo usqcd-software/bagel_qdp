@@ -260,6 +260,14 @@ void bagel_su3(char *name)
 	complex_load(C[i][j], MATRIX[i][j][0], Cptr, GaugeType);
       }
     }
+
+    if (bothConj ) { 
+      for(j = 0;j<3;j++ ) {
+	queue_fmov(t,C[j][i]+1);
+	queue_fneg(C[j][i]+1,t);
+      }
+    }
+
   }
 
 
@@ -267,7 +275,7 @@ void bagel_su3(char *name)
   //First row
   i=0;
   
-  if ( conjB && (!conjC) ) {
+  if ( conjB ) {
     k=0;
     complex_three_conjmuls(A[i][0], B[i][0], C[0][0],
 			   A[i][1], B[i][0], C[0][1],
@@ -310,12 +318,6 @@ void bagel_su3(char *name)
 			 A[i][2], B[i][2], C[2][2]);
 
  
-    if (bothConj ) { 
-      for(j = 0;j<3;j++ ) {
-	queue_fmov(t,A[i][j]+1);
-	queue_fneg(A[i][j]+1,t);
-      }
-    }
     
   }
 
@@ -329,7 +331,7 @@ void bagel_su3(char *name)
   queue_prefetch(PreC);
 
   i=1;
-  if ( conjB && (!conjC) ) {
+  if ( conjB ) {
     k=0;
     complex_three_conjmuls(A[i][0], B[i][0], C[0][0],
 			   A[i][1], B[i][0], C[0][1],
@@ -371,13 +373,6 @@ void bagel_su3(char *name)
 			 A[i][1], B[i][2], C[2][1],
 			 A[i][2], B[i][2], C[2][2]);
 
-
-    if ( bothConj ) { 
-      for(j = 0;j<3;j++ ) {
-	queue_fmov(t,A[i][j]+1);
-	queue_fneg(A[i][j]+1,t);
-      }
-    }
   
   }
 
@@ -389,7 +384,7 @@ void bagel_su3(char *name)
 
 
   i=2;
-  if ( conjB && (!conjC) ) {
+  if ( conjB  ) {
     k=0;
     complex_three_conjmuls(A[i][0], B[i][0], C[0][0],
 			   A[i][1], B[i][0], C[0][1],
@@ -434,12 +429,6 @@ void bagel_su3(char *name)
 			 A[i][1], B[i][2], C[2][1],
 			 A[i][2], B[i][2], C[2][2]);
 
-   if (bothConj ) { 
-      for(j = 0;j<3;j++ ) {
-	queue_fmov(t,A[i][j]+1);
-	queue_fneg(A[i][j]+1,t);
-      }
-    }
 
   }
 
