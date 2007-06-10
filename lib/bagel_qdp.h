@@ -259,23 +259,26 @@ extern "C" {
   void qdp_su3_mm(Float* A,
 		  Float* B,
 		  Float* C,
-		  unsigned long n_mat);
+		  unsigned long n_mat,
+		  unsigned long one_plus_minus_i_ptr);
 
   void qdp_su3_ma(Float* A,
 		  Float* B,
 		  Float* C,
-		  unsigned long n_mat);
+		  unsigned long n_mat,
+		  unsigned long one_plus_minus_i_ptr);
 
   void qdp_su3_am(Float* A,
 		  Float* B,
 		  Float* C,
-		  unsigned long n_mat);
+		  unsigned long n_mat,
+		  unsigned long one_plus_minus_i_ptr);
 
   void qdp_su3_aa(Float* A,
 		  Float* B,
 		  Float* C,
-		  unsigned long n_mat);
-
+		  unsigned long n_mat,
+		  unsigned long one_plus_minus_i_ptr);
 };
 
 
