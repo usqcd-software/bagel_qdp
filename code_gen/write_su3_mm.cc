@@ -21,6 +21,11 @@
 
 extern struct rotating_reg *CMADregs;
 
+void queue_conjugate(int e )
+{
+  int im_register = e + 1;
+  make_inst( FMOVPIPE, FNEG, im_register,im_register);
+}
 
 void bagel_su3( char *);
 
@@ -77,96 +82,6 @@ int main ( int argc, char *argv[])
 
 }
 
-  /*
-   * bagel_su3( A, B, C ) 
-   * Cregs A[nvec][Nrow][Ncol]
-   * Cregs B[nvec][Nrow][Ncol]
-   * Cregs C[nvec][Nrow][Ncol]
-   *
-   * asmint nvec
-   *
-   * Load C[i, 0, :] - 18 fregs 
-   * Load B[i, 0, :]  - 6 fregs 
-
-   * for(i=0;i<nvec-1;i++) {
-   *     A[i,0,0]  = B[i, 0, 0] * C[i, 0, 0]
-   *     A[i,0,1]  = B[i, 0, 0] * C[i, 0, 1]
-   *     A[i,0,2]  = B[i, 0, 0] * C[i, 0, 2]
-   *     A[i,0,0] += B[i, 0, 1] * C[i, 1, 0]
-   *     A[i,0,1] += B[i, 0, 1] * C[i, 1, 1]
-   *     A[i,0,2] += B[i, 0, 1] * C[i, 1, 2]
-   *     A[i,0,0] += B[i, 0, 2] * C[i, 2, 0]
-   *     A[i,0,1] += B[i, 0, 2] * C[i, 2, 1]
-   *     A[i,0,2] += B[i, 0, 2] * C[i, 2, 2]
-   *     Steram out A[i,0,:]
-
-   *     Load B[i, 1, :]
-   *     A[i,1,0]  = B[i, 1, 0] * C[i, 0, 0]
-   *     A[i,1,1]  = B[i, 1, 0] * C[i, 0, 1]
-   *     A[i,1,2]  = B[i, 1, 0] * C[i, 0, 2]
-   *     A[i,1,0] += B[i, 1, 1] * C[i, 1, 0]
-   *     A[i,1,1] += B[i, 1, 1] * C[i, 1, 1]
-   *     A[i,1,2] += B[i, 1, 1] * C[i, 1, 2]
-   *     A[i,1,0] += B[i, 1, 2] * C[i, 2, 0]
-   *     A[i,1,1] += B[i, 1, 2] * C[i, 2, 1]
-   *     A[i,1,2] += B[i, 1, 2] * C[i, 2, 2]
-   *     Stream out A[i,1,:]
-
-   *     Load B[i, 2, :]
-   *     A[i,2,0]  = B[i, 2, 0] * C[i, 0, 0]
-   *     A[i,2,1]  = B[i, 2, 0] * C[i, 0, 1]
-   *     A[i,2,2]  = B[i, 2, 0] * C[i, 0, 2]
-   *     A[i,2,0] += B[i, 2, 1] * C[i, 1, 0]
-   *     A[i,2,1] += B[i, 2, 1] * C[i, 1, 1]
-   *     A[i,2,2] += B[i, 2, 1] * C[i, 1, 2]
-   *     A[i,2,0] += B[i, 2, 2] * C[i, 2, 0]
-   *     A[i,2,1] += B[i, 2, 2] * C[i, 2, 1]
-   *     A[i,2,2] += B[i, 2, 2] * C[i, 2, 2]
-   *     Stream out A[i,2,:]
-   *     Load C[i+1, :, :] - 18 regs 
-   *     Load B[i+1, 0, :]  - 6 regs 
-   *
-   *  }
-   *
-   *  A[nvec-1,0,0]  = B[nvec-1, 0, 0] * C[nvec-1, 0, 0]
-   *  A[nvec-1,0,1]  = B[nvec-1, 0, 0] * C[nvec-1, 0, 1]
-   *  A[nvec-1,0,2]  = B[nvec-1, 0, 0] * C[nvec-1, 0, 2]
-   *  A[nvec-1,0,0] += B[nvec-1, 0, 1] * C[nvec-1, 1, 0]
-   *  A[nvec-1,0,1] += B[nvec-1, 0, 1] * C[nvec-1, 1, 1]
-   *  A[nvec-1,0,2] += B[nvec-1, 0, 1] * C[nvec-1, 1, 2]
-   *  A[nvec-1,0,0] += B[nvec-1, 0, 2] * C[nvec-1, 2, 0]
-   *  A[nvec-1,0,1] += B[nvec-1, 0, 2] * C[nvec-1, 2, 1]
-   *  A[nvec-1,0,2] += B[nvec-1, 0, 2] * C[nvec-1, 2, 2]
-   *  Steram out A[nvec-1,0,:]
-
-   *  Load B[nvec-1, 1, :]
-   *  A[nvec-1,1,0]  = B[nvec-1, 1, 0] * C[nvec-1, 0, 0]
-   *  A[nvec-1,1,1]  = B[nvec-1, 1, 0] * C[nvec-1, 0, 1]
-   *  A[nvec-1,1,2]  = B[nvec-1, 1, 0] * C[nvec-1, 0, 2]
-   *  A[nvec-1,1,0] += B[nvec-1, 1, 1] * C[nvec-1, 1, 0]
-   *  A[nvec-1,1,1] += B[nvec-1, 1, 1] * C[nvec-1, 1, 1]
-   *  A[nvec-1,1,2] += B[nvec-1, 1, 1] * C[nvec-1, 1, 2]
-   *  A[nvec-1,1,0] += B[nvec-1, 1, 2] * C[nvec-1, 2, 0]
-   *  A[nvec-1,1,1] += B[nvec-1, 1, 2] * C[nvec-1, 2, 1]
-   *  A[nvec-1,1,2] += B[nvec-1, 1, 2] * C[nvec-1, 2, 2]
-   *  Stream out A[nvec-1,1,:]
-
-   *  Load B[nvec-1, 2, :]
-   *  A[nvec-1,2,0]  = B[nvec-1, 2, 0] * C[nvec-1, 0, 0]
-   *  A[nvec-1,2,1]  = B[nvec-1, 2, 0] * C[nvec-1, 0, 1]
-   *  A[nvec-1,2,2]  = B[nvec-1, 2, 0] * C[nvec-1, 0, 2]
-   *  A[nvec-1,2,0] += B[nvec-1, 2, 1] * C[nvec-1, 1, 0]
-   *  A[nvec-1,2,1] += B[nvec-1, 2, 1] * C[nvec-1, 1, 1]
-   *  A[nvec-1,2,2] += B[nvec-1, 2, 1] * C[nvec-1, 1, 2]
-   *  A[nvec-1,2,0] += B[nvec-1, 2, 2] * C[nvec-1, 2, 0]
-   *  A[nvec-1,2,1] += B[nvec-1, 2, 2] * C[nvec-1, 2, 1]
-   *  A[nvec-1,2,2] += B[nvec-1, 2, 2] * C[nvec-1, 2, 2]
-   *  Stream out A[nvec-1,2,:]
-
-   * }
-   *
-   */
-
 void bagel_su3(char *name)
 {
   int dum = defargcount(4);
@@ -178,15 +93,14 @@ void bagel_su3(char *name)
   alreg(Cptr,Iregs);
   alreg(counter,Iregs);
   alreg(Aprev,Iregs);
-  alreg(t,Fregs);
+
   
 
-  /* All the matrices */
+  /* All the matrices */  
   reg_array_2d(A, Cregs, 3, 3);
   reg_array_2d(B, Cregs, 3, 3);
   reg_array_2d(C, Cregs, 3, 3);
 
-  
   /* Space between successive matrices */
   def_off(MATRIX_ATOM, GaugeType, 18);
 
@@ -211,9 +125,11 @@ void bagel_su3(char *name)
   getarg(Cptr);           /*Get args*/
   getarg(counter);
 
+
   for(int i=0; i < 18; i++) { 
     need_constant(i*2*SizeofDatum(GaugeType));
   }
+  
 
   PreA = create_stream(MATRIX_ATOM, Aptr,counter,STREAM_OUT,LINEAR);
   PreB = create_stream(MATRIX_ATOM, Bptr, counter, STREAM_IN, LINEAR);
@@ -230,8 +146,6 @@ void bagel_su3(char *name)
 
   // Make the first Adude the previous one.
   make_inst (IALUPIPE,IOR,Aprev,Aptr,Aptr);
-
-
 
   // Start loop
   brchno = start_loop(counter);
@@ -259,15 +173,11 @@ void bagel_su3(char *name)
       else { 
 	complex_load(C[i][j], MATRIX[i][j][0], Cptr, GaugeType);
       }
-    }
 
-    if (bothConj ) { 
-      for(j = 0;j<3;j++ ) {
-	queue_fmov(t,C[j][i]+1);
-	queue_fneg(C[j][i]+1,t);
+      if (bothConj ) { 
+	queue_conjugate(C[j][i]);
       }
     }
-
   }
 
 
