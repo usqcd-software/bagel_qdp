@@ -84,7 +84,7 @@ int main ( int argc, char *argv[])
 
 void bagel_su3(char *name)
 {
-  int dum = defargcount(4);
+  int dum = defargcount(5);
 
   /*Integer register usage*/
   /*For arguments */
@@ -92,6 +92,8 @@ void bagel_su3(char *name)
   alreg(Bptr,Iregs);
   alreg(Cptr,Iregs);
   alreg(counter,Iregs);
+  alreg(one_minus_iptr,Iregs);
+
   alreg(Aprev,Iregs);
 
   
@@ -101,6 +103,12 @@ void bagel_su3(char *name)
   reg_array_2d(B, Cregs, 3, 3);
   reg_array_2d(C, Cregs, 3, 3);
 
+  int one_minus_i;
+  if ( bothConj) {
+    one_minus_i = allocate_reg(Cregs,"one_minus_i_ptr");
+    def_off(ZERO, GaugeType, 0);
+  }
+  
   /* Space between successive matrices */
   def_off(MATRIX_ATOM, GaugeType, 18);
 
@@ -124,12 +132,15 @@ void bagel_su3(char *name)
   getarg(Bptr);           /*Get args*/
   getarg(Cptr);           /*Get args*/
   getarg(counter);
-
+  getarg(one_minus_iptr);
 
   for(int i=0; i < 18; i++) { 
     need_constant(i*2*SizeofDatum(GaugeType));
   }
   
+  if( bothConj ){
+    need_constant(0);
+  }
 
   PreA = create_stream(MATRIX_ATOM, Aptr,counter,STREAM_OUT,LINEAR);
   PreB = create_stream(MATRIX_ATOM, Bptr, counter, STREAM_IN, LINEAR);
@@ -146,7 +157,9 @@ void bagel_su3(char *name)
 
   // Make the first Adude the previous one.
   make_inst (IALUPIPE,IOR,Aprev,Aptr,Aptr);
-
+  if( bothConj ) {
+    complex_load(one_minus_i, 0, one_minus_iptr, GaugeType);
+  }
   // Start loop
   brchno = start_loop(counter);
 
@@ -175,7 +188,12 @@ void bagel_su3(char *name)
       }
 
       if (bothConj ) { 
-	queue_conjugate(C[j][i]);
+	if( have_hummer() ) {
+	  make_inst( SIMD2HUMMERPIPE, FMUL2, C[j][i], one_minus_i, C[j][i]); 
+	}
+	else {
+	  queue_fneg(C[j][i]+1, C[j][i]+1);
+	}
       }
     }
   }
