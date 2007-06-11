@@ -180,6 +180,15 @@ void bagel_su3(char *name)
 	complex_load(B[i][j], MATRIX[i][j][0], Bptr, GaugeType);
       }
 
+      if (bothConj ) { 
+	if( have_hummer() ) {
+	  make_inst( SIMD2HUMMERPIPE, FMUL2, B[j][i], one_minus_i, B[j][i]); 
+	}
+	else {
+	  queue_fneg(B[j][i]+1, B[j][i]+1);
+	}
+      }
+
       if( conjC == true) {
 	complex_load(C[j][i], MATRIX[i][j][0], Cptr, GaugeType);
       }
@@ -203,7 +212,7 @@ void bagel_su3(char *name)
   //First row
   i=0;
   
-  if ( conjB ) {
+  if ( conjB && (!conjC) ) {
     k=0;
     complex_three_conjmuls(A[i][0], B[i][0], C[0][0],
 			   A[i][1], B[i][0], C[0][1],
@@ -259,7 +268,7 @@ void bagel_su3(char *name)
   queue_prefetch(PreC);
 
   i=1;
-  if ( conjB ) {
+  if ( conjB  && (!conjC) ) {
     k=0;
     complex_three_conjmuls(A[i][0], B[i][0], C[0][0],
 			   A[i][1], B[i][0], C[0][1],
@@ -312,7 +321,7 @@ void bagel_su3(char *name)
 
 
   i=2;
-  if ( conjB  ) {
+  if ( conjB  && (!conjC) ) {
     k=0;
     complex_three_conjmuls(A[i][0], B[i][0], C[0][0],
 			   A[i][1], B[i][0], C[0][1],
