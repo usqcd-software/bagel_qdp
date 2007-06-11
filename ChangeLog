@@ -1,3 +1,7 @@
+2007-06-11 17:18  bjoo
+
+	* code_gen/write_su3_mm.cc: Yet another try then
+
 2007-06-10 19:47  bjoo
 
 	* lib/bagel_qdp.h: And this goes with it
