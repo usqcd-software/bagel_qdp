@@ -83,7 +83,9 @@ am__objects_1 = bagel_vaxpy3.$(OBJEXT) bagel_vaxmy3.$(OBJEXT) \
 	bagel_vaxmbg5iy.$(OBJEXT) bagel_vxpag5iy.$(OBJEXT) \
 	bagel_vxmag5iy.$(OBJEXT) bagel_su3_mm.$(OBJEXT) \
 	bagel_su3_am.$(OBJEXT) bagel_su3_ma.$(OBJEXT) \
-	bagel_su3_aa.$(OBJEXT)
+	bagel_su3_aa.$(OBJEXT) bagel_su3_mm_peq.$(OBJEXT) \
+	bagel_su3_am_peq.$(OBJEXT) bagel_su3_ma_peq.$(OBJEXT) \
+	bagel_su3_aa_peq.$(OBJEXT)
 am__objects_2 = noarch_bagel_vaxpy3.$(OBJEXT) \
 	noarch_bagel_vaxmy3.$(OBJEXT) noarch_bagel_vaxpby3.$(OBJEXT) \
 	noarch_bagel_vaxmby3.$(OBJEXT) noarch_bagel_vadd3.$(OBJEXT) \
@@ -121,7 +123,11 @@ am__objects_2 = noarch_bagel_vaxpy3.$(OBJEXT) \
 	noarch_bagel_vxpag5iy.$(OBJEXT) \
 	noarch_bagel_vxmag5iy.$(OBJEXT) noarch_bagel_su3_mm.$(OBJEXT) \
 	noarch_bagel_su3_ma.$(OBJEXT) noarch_bagel_su3_am.$(OBJEXT) \
-	noarch_bagel_su3_aa.$(OBJEXT)
+	noarch_bagel_su3_aa.$(OBJEXT) \
+	noarch_bagel_su3_mm_peq.$(OBJEXT) \
+	noarch_bagel_su3_ma_peq.$(OBJEXT) \
+	noarch_bagel_su3_am_peq.$(OBJEXT) \
+	noarch_bagel_su3_aa_peq.$(OBJEXT)
 @BUILD_ARCH_SOURCES_FALSE@@BUILD_NOARCH_SOURCES_TRUE@am__objects_3 = $(am__objects_2)
 @BUILD_ARCH_SOURCES_TRUE@am__objects_3 = $(am__objects_1)
 nodist_libbagel_qdp_a_OBJECTS = $(am__objects_3)
@@ -211,8 +217,11 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
+ac_ct_RANLIB = @ac_ct_RANLIB@
+ac_ct_STRIP = @ac_ct_STRIP@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -230,26 +239,19 @@ bagel_MUNGED_TARGET = @bagel_MUNGED_TARGET@
 bindir = @bindir@
 build_alias = @build_alias@
 datadir = @datadir@
-datarootdir = @datarootdir@
-docdir = @docdir@
-dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 host_alias = @host_alias@
-htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
-pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
-psdir = @psdir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
@@ -307,7 +309,11 @@ arch_sources = \
 	bagel_su3_mm.S \
 	bagel_su3_am.S \
 	bagel_su3_ma.S \
-	bagel_su3_aa.S
+	bagel_su3_aa.S \
+	bagel_su3_mm_peq.S \
+	bagel_su3_am_peq.S \
+	bagel_su3_ma_peq.S \
+	bagel_su3_aa_peq.S
 
 
 # Noarch architectures
@@ -356,7 +362,11 @@ noarch_sources = \
 	noarch_bagel_su3_mm.cc \
 	noarch_bagel_su3_ma.cc \
 	noarch_bagel_su3_am.cc \
-	noarch_bagel_su3_aa.cc
+	noarch_bagel_su3_aa.cc \
+	noarch_bagel_su3_mm_peq.cc \
+	noarch_bagel_su3_ma_peq.cc \
+	noarch_bagel_su3_am_peq.cc \
+	noarch_bagel_su3_aa_peq.cc
 
 
 # Conditional definition of extra sources
@@ -492,9 +502,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_local_vcdot.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_local_vcdot_real.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_su3_aa.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_su3_aa_peq.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_su3_am.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_su3_am_peq.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_su3_ma.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_su3_ma_peq.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_su3_mm.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_su3_mm_peq.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vadd3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vadd_ch_minus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/noarch_bagel_vadd_ch_plus.Po@am__quote@
@@ -900,6 +914,18 @@ bagel_su3_am.S: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
 bagel_su3_aa.S: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
 	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_aa -h -H -P$(bagelTargetName) > $@
 
+bagel_su3_mm_peq.S: $(bagelWriterDir)/write_su3_mm_peq$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm_peq$(EXEEXT) -nqdp_su3_mm_peq -P$(bagelTargetName) > $@
+
+bagel_su3_ma_peq.S: $(bagelWriterDir)/write_su3_mm_peq$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm_peq$(EXEEXT) -nqdp_su3_ma_peq -H -P$(bagelTargetName) > $@
+
+bagel_su3_am_peq.S: $(bagelWriterDir)/write_su3_mm_peq$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm_peq$(EXEEXT) -nqdp_su3_am_peq -h -P$(bagelTargetName) > $@
+
+bagel_su3_aa_peq.S: $(bagelWriterDir)/write_su3_mm_peq$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm_peq$(EXEEXT) -nqdp_su3_aa_peq -h -H -P$(bagelTargetName) > $@
+
 ########## NOARCH TARGETS ##############################
 
 noarch_bagel_vaxpy3.cc: $(bagelWriterDir)/write_vaxpy$(EXEEXT)
@@ -1035,6 +1061,18 @@ noarch_bagel_su3_am.cc: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
 
 noarch_bagel_su3_aa.cc: $(bagelWriterDir)/write_su3_mm$(EXEEXT)
 	$(bagelWriterDir)/write_su3_mm$(EXEEXT) -nqdp_su3_aa -h -H -P$(bagelTargetName) > $@
+
+noarch_bagel_su3_mm_peq.cc: $(bagelWriterDir)/write_su3_mm_peq$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm_peq$(EXEEXT) -nqdp_su3_mm_peq -P$(bagelTargetName) > $@
+
+noarch_bagel_su3_ma_peq.cc: $(bagelWriterDir)/write_su3_mm_peq$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm_peq$(EXEEXT) -nqdp_su3_ma_peq -H -P$(bagelTargetName) > $@
+
+noarch_bagel_su3_am_peq.cc: $(bagelWriterDir)/write_su3_mm_peq$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm_peq$(EXEEXT) -nqdp_su3_am_peq -h -P$(bagelTargetName) > $@
+
+noarch_bagel_su3_aa_peq.cc: $(bagelWriterDir)/write_su3_mm_peq$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm_peq$(EXEEXT) -nqdp_su3_aa_peq -h -H -P$(bagelTargetName) > $@
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -29,7 +29,7 @@ noinst_PROGRAMS = \
 	write_vaxpbg5iy$(EXEEXT) \
 	write_vxpag5iy$(EXEEXT) \
 	write_su3_mm$(EXEEXT) \
-	write_su3_ma$(EXEEXT)
+	write_su3_mm_peq$(EXEEXT)
 
 
 write_vaxpy_SOURCES = write_vaxpy.cc
@@ -92,8 +92,8 @@ write_vxpag5iy$(EXEEXT): write_vxpag5iy.cc
 write_su3_mm_SOURCES = write_su3_mm.cc
 write_su3_mm$(EXEEXT): write_su3_mm.cc
 
-write_su3_ma_SOURCES = write_su3_ma.cc
-write_su3_ma$(EXEEXT): write_su3_ma.cc
+write_su3_mm_peq_SOURCES = write_su3_mm_peq.cc
+write_su3_mm_peq$(EXEEXT): write_su3_mm_peq.cc
 
 
 %$(EXEEXT): %.cc

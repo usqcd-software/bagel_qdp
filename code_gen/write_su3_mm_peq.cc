@@ -21,7 +21,7 @@
 
 extern struct rotating_reg *CMADregs;
 
-void bagel_su3( char *);
+void bagel_su3_peq( char *);
 
 #include "bagel_qdp_options.h"
 
@@ -66,7 +66,7 @@ int main ( int argc, char *argv[])
   setup_cmadds();
 
   /*queue the naive asm code*/
-  bagel_su3(name);
+  bagel_su3_peq(name);
 
   /*Filter through an virtual out of order processor */
   schedule_for_proc();
@@ -76,25 +76,28 @@ int main ( int argc, char *argv[])
 
 }
 
-void bagel_su3(char *name)
+void bagel_su3_peq(char *name)
 {
-  int dum = defargcount(5);
+  int dum = defargcount(7);
 
   /*Integer register usage*/
   /*For arguments */
   alreg(Aptr,Iregs);
+  alreg(Dptr,Iregs);
+  alreg(aptr,Iregs);
   alreg(Bptr,Iregs);
   alreg(Cptr,Iregs);
   alreg(counter,Iregs);
   alreg(OMIPtr, Iregs);
+
+
   alreg(Aprev,Iregs);
 
-  
-
-  /* All the matrices */
+  alreg(a, Cregs);
   alreg(OMI,Cregs);
-  
-  reg_array_2d(A, Cregs, 3, 3);
+
+  reg_array_1d(A, Cregs, 3);
+  reg_array_1d(D, Cregs, 3);
   reg_array_2d(B, Cregs, 3, 3);
   reg_array_2d(C, Cregs, 3, 3);
 
@@ -111,6 +114,7 @@ void bagel_su3(char *name)
   struct stream *PreA; /* Prefetching */
   struct stream *PreB;
   struct stream *PreC;
+  struct stream *PreD;
 
   int brchno,retno; /*Branch target handles*/
   int co,rei; /* Internal counters */
@@ -121,6 +125,8 @@ void bagel_su3(char *name)
   save_regs();
 
   getarg(Aptr);
+  getarg(Dptr);
+  getarg(aptr);
   getarg(Bptr);           /*Get args*/
   getarg(Cptr);           /*Get args*/
   getarg(counter);
@@ -133,6 +139,7 @@ void bagel_su3(char *name)
   PreA = create_stream(MATRIX_ATOM, Aptr,counter,STREAM_OUT,LINEAR);
   PreB = create_stream(MATRIX_ATOM, Bptr, counter, STREAM_IN, LINEAR);
   PreC = create_stream(MATRIX_ATOM, Cptr, counter, STREAM_IN, LINEAR);
+  PreD = create_stream(MATRIX_ATOM, Dptr, counter, STREAM_IN, LINEAR);
  
   /*Branch to stack restore if length <1*/
   retno = get_target_label();
@@ -141,11 +148,15 @@ void bagel_su3(char *name)
   /*
    * Start software pipeline
    */
+
+  /* If both are conjugated load  (1,-i) */
   if( bothConj ) {
    complex_load(OMI, ioff, OMIPtr, GaugeType);  
   }
 
-  // Make the first Adude the previous one.
+  complex_load(a, ioff, aptr, GaugeType);
+
+  // Make the first  A dude the previous one.
   make_inst (IALUPIPE,IOR,Aprev,Aptr,Aptr);
 
   // Start loop
@@ -154,13 +165,15 @@ void bagel_su3(char *name)
   // Store Last row of A from previous iteration.
   // In first iteration it writes junk but who cares
   for(j = 0;j<3;j++ ){
-    complex_store(A[2][j],MATRIX[2][j][0],Aprev,GaugeType);
+    complex_store(D[j],MATRIX[2][j][0],Aprev,GaugeType);
   }
 
 
-  /* Load ALL of A & B */
+  /* Load ALL of B & C */
   for(i=0; i < 3; i++) {
     for(j=0; j < 3; j++) { 
+
+      // Load B[i][j] - or B[j][i] if matrix is conjugated
       if( conjB == true ) {
 	complex_load(B[j][i], MATRIX[i][j][0], Bptr, GaugeType);
       }
@@ -168,6 +181,9 @@ void bagel_su3(char *name)
 	complex_load(B[i][j], MATRIX[i][j][0], Bptr, GaugeType);
       }
 
+      // If both matrices are to be conjugated 
+      //  We've already read in the transposes so conjugate the values
+      //  (we'll use the normal matrix multiply
       if (bothConj ) {
           if( have_hummer() ) {  
 	    make_inst( SIMD2HUMMERPIPE, FMUL2, B[j][i], OMI, B[j][i] );
@@ -177,6 +193,7 @@ void bagel_su3(char *name)
           }
       }
 
+      // Load C[i][j] - or C[j][i] if matrix i conjugated
       if( conjC == true) {
 	complex_load(C[j][i], MATRIX[i][j][0], Cptr, GaugeType);
       }
@@ -184,6 +201,9 @@ void bagel_su3(char *name)
 	complex_load(C[i][j], MATRIX[i][j][0], Cptr, GaugeType);
       }
 
+      // If both matrices are to be conjugated 
+      //  We've already read in the transposes so conjugate the values
+      //  (we'll use the normal matrix multiply
       if (bothConj ) { 
 	if( have_hummer() ) { 
 	   make_inst( SIMD2HUMMERPIPE, FMUL2, C[j][i], OMI, C[j][i]);
@@ -192,185 +212,224 @@ void bagel_su3(char *name)
 	  queue_fneg(C[j][i]+1, C[j][i]+1);
         }
       }
+
     }
   }
 
-
-
-  //First row
-  i=0;
-  
-  if ( conjB && (!conjC) ) {
-    k=0;
-    complex_three_conjmuls(A[i][0], B[i][0], C[0][0],
-			   A[i][1], B[i][0], C[0][1],
-			   A[i][2], B[i][0], C[0][2]);
-    k=1;
-    complex_three_conjmadds(A[i][0], B[i][1], C[1][0],
-			    A[i][1], B[i][1], C[1][1],
-			    A[i][2], B[i][1], C[1][2]);
-    k=2;
-    complex_three_conjmadds(A[i][0], B[i][2], C[2][0],
-			    A[i][1], B[i][2], C[2][1],
-			    A[i][2], B[i][2], C[2][2]);
-  }
-  else if( (!conjB) && (conjC) ) {
-    k=0;
-    complex_three_conjmuls(A[i][0], C[0][0], B[i][0],
-			   A[i][1], C[0][1], B[i][0],
-			   A[i][2], C[0][2], B[i][0]);
-    k=1;
-    complex_three_conjmadds(A[i][0], C[1][0], B[i][1],
-			    A[i][1], C[1][1], B[i][1],
-			    A[i][2], C[1][2], B[i][1]);
-    k=2;
-    complex_three_conjmadds(A[i][0], C[2][0], B[i][2],
-			    A[i][1], C[2][1], B[i][2],
-			    A[i][2], C[2][2], B[i][2]);
-  }
-  else { 
-    k=0;
-    complex_three_cmuls(A[i][0], B[i][0], C[0][0],
-			A[i][1], B[i][0], C[0][1],
-			A[i][2], B[i][0], C[0][2]);
-    k=1;
-    complex_three_cmadds(A[i][0], B[i][1], C[1][0],
-			 A[i][1], B[i][1], C[1][1],
-			 A[i][2], B[i][1], C[1][2]);
-    k=2;
-    complex_three_cmadds(A[i][0], B[i][2], C[2][0],
-			 A[i][1], B[i][2], C[2][1],
-			 A[i][2], B[i][2], C[2][2]);
-
- 
-    
-  }
-
-  
-  // Store i-th row
-  for(j = 0;j<3;j++ ) {
-    complex_store(A[i][j],MATRIX[i][j][0],Aptr,GaugeType);
-  }
-  
   queue_prefetch(PreB);
   queue_prefetch(PreC);
 
-  i=1;
-  if ( conjB  && (!conjC) ) {
+#if 0
+  /* Multiply B by scalar */
+  for(i=0; i < 3; i++) {
+    complex_three_cmuls(B[i][0], a, B[i][0],  
+			B[i][1], a, B[i][1],
+			B[i][2], a, B[i][2]);
+  }
+#endif
+
+  // Now compute a_ij = d_ij + b_ij c_kj
+  // we do it by row so.
+  i=0;
+
+  // Load d_ij
+  for(j=0; j < 3; j++) { 
+    complex_load(D[j], MATRIX[i][j][0], Dptr, GaugeType);
+  }
+  
+
+  // work out a_ij
+  if ( conjB && (!conjC) ) {
     k=0;
-    complex_three_conjmuls(A[i][0], B[i][0], C[0][0],
-			   A[i][1], B[i][0], C[0][1],
-			   A[i][2], B[i][0], C[0][2]);
+    complex_three_conjmuls(A[0], B[i][0], C[0][0],
+			   A[1], B[i][0], C[0][1],
+			   A[2], B[i][0], C[0][2]);
     k=1;
-    complex_three_conjmadds(A[i][0], B[i][1], C[1][0],
-			    A[i][1], B[i][1], C[1][1],
-			    A[i][2], B[i][1], C[1][2]);
+    complex_three_conjmadds(A[0], B[i][1], C[1][0],
+			    A[1], B[i][1], C[1][1],
+			    A[2], B[i][1], C[1][2]);
     k=2;
-    complex_three_conjmadds(A[i][0], B[i][2], C[2][0],
-			    A[i][1], B[i][2], C[2][1],
-			    A[i][2], B[i][2], C[2][2]);
+    complex_three_conjmadds(A[0],  B[i][2], C[2][0],
+			      A[1], B[i][2], C[2][1],
+			      A[2], B[i][2], C[2][2]);
   }
   else if( (!conjB) && (conjC) ) {
     k=0;
-    complex_three_conjmuls(A[i][0], C[0][0], B[i][0],
-			   A[i][1], C[0][1], B[i][0],
-			   A[i][2], C[0][2], B[i][0]);
+    complex_three_conjmuls(A[0], C[0][0], B[i][0],
+			   A[1], C[0][1], B[i][0],
+			   A[2], C[0][2], B[i][0]);
     k=1;
-    complex_three_conjmadds(A[i][0], C[1][0], B[i][1],
-			    A[i][1], C[1][1], B[i][1],
-			    A[i][2], C[1][2], B[i][1]);
+    complex_three_conjmadds(A[0], C[1][0], B[i][1],
+			    A[1], C[1][1], B[i][1],
+			    A[2], C[1][2], B[i][1]);
     k=2;
-    complex_three_conjmadds(A[i][0], C[2][0], B[i][2],
-			    A[i][1], C[2][1], B[i][2],
-			    A[i][2], C[2][2], B[i][2]);
+    complex_three_conjmadds(A[0], C[2][0], B[i][2],
+			    A[1], C[2][1], B[i][2],
+			    A[2], C[2][2], B[i][2]);
   }
   else { 
     k=0;
-    complex_three_cmuls(A[i][0], B[i][0], C[0][0],
-			A[i][1], B[i][0], C[0][1],
-			A[i][2], B[i][0], C[0][2]);
+    complex_three_cmuls(A[0], B[i][0], C[0][0],
+			A[1], B[i][0], C[0][1],
+			A[2], B[i][0], C[0][2]);
     k=1;
-    complex_three_cmadds(A[i][0], B[i][1], C[1][0],
-			 A[i][1], B[i][1], C[1][1],
-			 A[i][2], B[i][1], C[1][2]);
+    complex_three_cmadds(A[0], B[i][1], C[1][0],
+			 A[1], B[i][1], C[1][1],
+			 A[2], B[i][1], C[1][2]);
     k=2;
-    complex_three_cmadds(A[i][0], B[i][2], C[2][0],
-			 A[i][1], B[i][2], C[2][1],
-			 A[i][2], B[i][2], C[2][2]);
+    complex_three_cmadds(A[0], B[i][2], C[2][0],
+			 A[1], B[i][2], C[2][1],
+			 A[2], B[i][2], C[2][2]);
+    
+  }
+
+  complex_three_cmadds(D[0], a, A[0],
+		       D[1], a, A[1],
+		       D[2], a, A[2]);
+
+  // Store a_ij
+  for(j = 0;j<3;j++ ) {
+    complex_store(D[j],MATRIX[i][j][0],Aptr,GaugeType);
+  }
+
+
+
+  i=1;
+  // Load d_ij
+  for(j=0; j < 3; j++) { 
+    complex_load(D[j], MATRIX[i][j][0], Dptr, GaugeType);
+  }
+
+
+  // Work out a_ij
+  if ( conjB  && (!conjC) ) {
+    k=0;
+    complex_three_conjmuls(A[0], B[i][0], C[0][0],
+			   A[1], B[i][0], C[0][1],
+			   A[2], B[i][0], C[0][2]);
+    k=1;
+    complex_three_conjmadds(A[0], B[i][1], C[1][0],
+			    A[1], B[i][1], C[1][1],
+			    A[2], B[i][1], C[1][2]);
+    k=2;
+    complex_three_conjmadds(A[0], B[i][2], C[2][0],
+			    A[1], B[i][2], C[2][1],
+			    A[2], B[i][2], C[2][2]);
+  }
+  else if( (!conjB) && (conjC) ) {
+    k=0;
+    complex_three_conjmuls(A[0], C[0][0], B[i][0],
+			   A[1], C[0][1], B[i][0],
+			   A[2], C[0][2], B[i][0]);
+    k=1;
+    complex_three_conjmadds(A[0], C[1][0], B[i][1],
+			    A[1], C[1][1], B[i][1],
+			    A[2], C[1][2], B[i][1]);
+    k=2;
+    complex_three_conjmadds(A[0], C[2][0], B[i][2],
+			    A[1], C[2][1], B[i][2],
+			    A[2], C[2][2], B[i][2]);
+  }
+  else { 
+    k=0;
+    complex_three_cmuls(A[0], B[i][0], C[0][0],
+			A[1], B[i][0], C[0][1],
+			A[2], B[i][0], C[0][2]);
+    k=1;
+    complex_three_cmadds(A[0], B[i][1], C[1][0],
+			 A[1], B[i][1], C[1][1],
+			 A[2], B[i][1], C[1][2]);
+    k=2;
+    complex_three_cmadds(A[0], B[i][2], C[2][0],
+			 A[1], B[i][2], C[2][1],
+			 A[2], B[i][2], C[2][2]);
 
   
   }
 
+  complex_three_cmadds(D[0], a, A[0],
+		       D[1], a, A[1],
+		       D[2], a, A[2]);
   
-  // Store i-th row
+  // store a_ij
   for(j = 0;j<3;j++ ){
-    complex_store(A[i][j],MATRIX[i][j][0],Aptr,GaugeType);
+    complex_store(D[j],MATRIX[i][j][0],Aptr,GaugeType);
   }
 
 
   i=2;
+
+  // Store i-th row
+  for(j = 0;j<3;j++ ){
+    complex_load(D[j],MATRIX[i][j][0],Dptr,GaugeType);
+  }
+
   if ( conjB  && (!conjC) ) {
     k=0;
-    complex_three_conjmuls(A[i][0], B[i][0], C[0][0],
-			   A[i][1], B[i][0], C[0][1],
-			   A[i][2], B[i][0], C[0][2]);
+    complex_three_conjmuls(A[0], B[i][0], C[0][0],
+			   A[1], B[i][0], C[0][1],
+			   A[2], B[i][0], C[0][2]);
     k=1;
-    complex_three_conjmadds(A[i][0], B[i][1], C[1][0],
-			    A[i][1], B[i][1], C[1][1],
-			    A[i][2], B[i][1], C[1][2]);
+    complex_three_conjmadds(A[0], B[i][1], C[1][0],
+			    A[1], B[i][1], C[1][1],
+			    A[2], B[i][1], C[1][2]);
     k=2;
-    complex_three_conjmadds(A[i][0], B[i][2], C[2][0],
-			    A[i][1], B[i][2], C[2][1],
-			    A[i][2], B[i][2], C[2][2]);
+    complex_three_conjmadds(A[0], B[i][2], C[2][0],
+			    A[1], B[i][2], C[2][1],
+			    A[2], B[i][2], C[2][2]);
   }
   else if( (!conjB) && (conjC) ) {
     k=0;
-    complex_three_conjmuls(A[i][0], C[0][0], B[i][0],
-			   A[i][1], C[0][1], B[i][0],
-			   A[i][2], C[0][2], B[i][0]);
+    complex_three_conjmuls(A[0], C[0][0], B[i][0],
+			   A[1], C[0][1], B[i][0],
+			   A[2], C[0][2], B[i][0]);
     k=1;
-    complex_three_conjmadds(A[i][0], C[1][0], B[i][1],
-			    A[i][1], C[1][1], B[i][1],
-			    A[i][2], C[1][2], B[i][1]);
+    complex_three_conjmadds(A[0], C[1][0], B[i][1],
+			    A[1], C[1][1], B[i][1],
+			    A[2], C[1][2], B[i][1]);
     k=2;
-    complex_three_conjmadds(A[i][0], C[2][0], B[i][2],
-			    A[i][1], C[2][1], B[i][2],
-			    A[i][2], C[2][2], B[i][2]);
+    complex_three_conjmadds(A[0], C[2][0], B[i][2],
+			    A[1], C[2][1], B[i][2],
+			    A[2], C[2][2], B[i][2]);
   }
   else { 
     // This is what to do if either none, or both are conjugated
     // in the case where both are conjugated we need different loading 
     // and storing
     k=0;
-    complex_three_cmuls(A[i][0], B[i][0], C[0][0],
-			A[i][1], B[i][0], C[0][1],
-			A[i][2], B[i][0], C[0][2]);
+    complex_three_cmuls(A[0], B[i][0], C[0][0],
+			A[1], B[i][0], C[0][1],
+			A[2], B[i][0], C[0][2]);
     k=1;
-    complex_three_cmadds(A[i][0], B[i][1], C[1][0],
-			 A[i][1], B[i][1], C[1][1],
-			 A[i][2], B[i][1], C[1][2]);
+    complex_three_cmadds(A[0], B[i][1], C[1][0],
+			 A[1], B[i][1], C[1][1],
+			 A[2], B[i][1], C[1][2]);
     k=2;
-    complex_three_cmadds(A[i][0], B[i][2], C[2][0],
-			 A[i][1], B[i][2], C[2][1],
-			 A[i][2], B[i][2], C[2][2]);
+    complex_three_cmadds(A[0], B[i][2], C[2][0],
+			 A[1], B[i][2], C[2][1],
+			 A[2], B[i][2], C[2][2]);
 
 
   }
+  complex_three_cmadds(D[0], a, A[0],
+		       D[1], a, A[1],
+		       D[2], a, A[2]);
 
-  
+  // Grab A to be A_prev so we can drain the pipe a thte end.
   make_inst(IALUPIPE,IOR,Aprev,Aptr,Aptr);
  
-
+  // Jump all the streams ahead a bit
   iterate_stream(PreA);
   iterate_stream(PreB);
   iterate_stream(PreC);
+  iterate_stream(PreD);
 
 
   stop_loop(brchno,counter);
 
   // The last row of the last one, falls through
   for(j = 0;j<3;j++ ){
-    complex_store(A[2][j],MATRIX[2][j][0],Aprev,GaugeType);
+    complex_store(D[j],MATRIX[2][j][0],Aprev,GaugeType);
   }
 
   make_inst(DIRECTIVE,Target,retno);
@@ -378,246 +437,6 @@ void bagel_su3(char *name)
   restore_regs();
   free_stack();
   make_inst(DIRECTIVE,Exit_Routine,name);
-
-#if 0
-  /*Floating register usage*/
-  alreg(B0,Cregs);
-  alreg(B1,Cregs);
-  alreg(B2,Cregs);
-
-  /* Rotating registers for C and A. Overallocate for good 
-     rotation */
-  
-  struct rotating_reg *Creg = create_rotating_reg(Cregs,4,"Creg"); 
-  struct rotating_reg *Areg = create_rotating_reg(Cregs,4,"Areg"); 
-  
-  /* Register array offset -- 3 complexes Used to index B */
-  /* Bugger 12 int registers for offsets */
-
-  offset_2d(ROW, GaugeType, 3, 2);
-
-
-  offset_3d(MATRIX, GaugeType, 3, 3, 2);
-
-  /* Prefetch offsets */
-  def_off(MATRIX_ATOM, GaugeType, 18);
-  def_off(ROW_ATOM, GaugeType, 6);
-
-  struct stream *PreA; /* Prefetching */
-  struct stream *PreB;
-  struct stream *PreC;
-
-  int brchno,retno; /*Branch target handles*/
-  int co,rei;
-
-  make_inst(DIRECTIVE,Enter_Routine,name);
-  grab_stack(0);
-  save_regs();
-
-  getarg(Aptr);
-  getarg(Bptr);           /*Get args*/
-  getarg(Cptr);           /*Get args*/
-  getarg(counter);
-  for(int i=0; i < 6; i++) need_constant(i*2*SizeofDatum(GaugeType));
-  for(int i=0; i < 9; i++) need_constant(i*2*SizeofDatum(GaugeType));
-
-  PreA = create_stream(MATRIX_ATOM, Aptr,counter,STREAM_OUT,LINEAR);
-  PreB= create_stream(ROW_ATOM,  Bptr, 3*counter, STREAM_IN ,LINEAR);
-  PreC= create_stream(MATRIX_ATOM, Cptr, counter, STREAM_IN ,LINEAR);
- 
-  /*Branch to stack restore if length <1*/
-  retno = get_target_label();
-  check_iterations(counter,retno); 
-
-  /*
-   * Start software pipeline
-   */
-
-  brchno = start_loop(counter);
-
-
-  
-  // Load B 
-    complex_load(B0, ROW[0][0], Bptr, GaugeType);
-    complex_load(B1, ROW[1][0], Bptr, GaugeType);
-    complex_load(B2, ROW[2][0], Bptr, GaugeType);
-    iterate_stream(PreB);
-
-
-  /*
-   *     A[i,0,0]  = B[i, 0, 0] * C[i, 0, 0]
-   *     A[i,0,0] += B[i, 0, 1] * C[i, 1, 0]
-   *     A[i,0,0] += B[i, 0, 2] * C[i, 2, 0]
-
-   *     A[i,0,1]  = B[i, 0, 0] * C[i, 0, 1]
-   *     A[i,0,1] += B[i, 0, 1] * C[i, 1, 1]
-   *     A[i,0,1] += B[i, 0, 2] * C[i, 2, 1]
-
-   *     A[i,0,2]  = B[i, 0, 0] * C[i, 0, 2]
-   *     A[i,0,2] += B[i, 0, 1] * C[i, 1, 2]
-   *     A[i,0,2] += B[i, 0, 2] * C[i, 2, 2]
-   */
-
-  /* Get a complex register pair for A[i,0,0] */
-  int areg, creg;
-
-  areg = get_rotating_register(Areg);
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[0][0][0], Cptr, GaugeType);
-  complex_mul(areg, B0, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[1][0][0], Cptr, GaugeType);
-  complex_madd(areg, B1, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[2][0][0], Cptr, GaugeType);
-  complex_madd(areg, B2, creg);
-  complex_store(areg, MATRIX[0][0][0], Aptr, GaugeType);
-
-
-  areg = get_rotating_register(Areg);
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[0][1][0], Cptr, GaugeType);
-  complex_mul(areg, B0, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[1][1][0], Cptr, GaugeType);
-  complex_madd(areg, B1, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[2][1][0], Cptr, GaugeType);
-  complex_madd(areg, B2, creg);
-  complex_store(areg, MATRIX[0][1][0], Aptr, GaugeType);
-
-  areg = get_rotating_register(Areg);
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[0][2][0], Cptr, GaugeType);
-  complex_mul(areg, B0, creg);
- 
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[1][2][0], Cptr, GaugeType);
-  complex_madd(areg, B1, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[2][2][0], Cptr, GaugeType);
-  complex_madd(areg, B2, creg);
-  complex_store(areg, MATRIX[0][2][0], Aptr, GaugeType);
-
-  // Load B 
-  complex_load(B0, ROW[0][0], Bptr, GaugeType);
-  complex_load(B1, ROW[1][0], Bptr, GaugeType);
-  complex_load(B2, ROW[2][0], Bptr, GaugeType);
- 
-  iterate_stream(PreB);
-
-  areg = get_rotating_register(Areg);
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[0][0][0], Cptr, GaugeType);
-  complex_mul(areg, B0, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[1][0][0], Cptr, GaugeType);
-  complex_madd(areg, B1, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[2][0][0], Cptr, GaugeType);
-  complex_madd(areg, B2, creg);
-  complex_store(areg, MATRIX[1][0][0], Aptr, GaugeType);
-
-
-  areg = get_rotating_register(Areg);
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[0][1][0], Cptr, GaugeType);
-  complex_mul(areg, B0, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[1][1][0], Cptr, GaugeType);
-  complex_madd(areg, B1, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[2][1][0], Cptr, GaugeType);
-  complex_madd(areg, B2, creg);
-  complex_store(areg, MATRIX[1][1][0], Aptr, GaugeType);
-
-  areg = get_rotating_register(Areg);
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[0][2][0], Cptr, GaugeType);
-  complex_mul(areg, B0, creg);
- 
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[1][2][0], Cptr, GaugeType);
-  complex_madd(areg, B1, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[2][2][0], Cptr, GaugeType);
-  complex_madd(areg, B2, creg);
-  complex_store(areg, MATRIX[1][2][0], Aptr, GaugeType);
-
-  // Load B 
-  complex_load(B0, ROW[0][0], Bptr, GaugeType);
-  complex_load(B1, ROW[1][0], Bptr, GaugeType);
-  complex_load(B2, ROW[2][0], Bptr, GaugeType);
-  
-  iterate_stream(PreB);
-
-  areg = get_rotating_register(Areg);
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[0][0][0], Cptr, GaugeType);
-  complex_mul(areg, B0, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[1][0][0], Cptr, GaugeType);
-  complex_madd(areg, B1, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[2][0][0], Cptr, GaugeType);
-  complex_madd(areg, B2, creg);
-  complex_store(areg, MATRIX[2][0][0], Aptr, GaugeType);
-
-
-  areg = get_rotating_register(Areg);
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[0][1][0], Cptr, GaugeType);
-  complex_mul(areg, B0, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[1][1][0], Cptr, GaugeType);
-  complex_madd(areg, B1, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[2][1][0], Cptr, GaugeType);
-  complex_madd(areg, B2, creg);
-  complex_store(areg, MATRIX[2][1][0], Aptr, GaugeType);
-
-  areg = get_rotating_register(Areg);
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[0][2][0], Cptr, GaugeType);
-  complex_mul(areg, B0, creg);
- 
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[1][2][0], Cptr, GaugeType);
-  complex_madd(areg, B1, creg);
-
-  creg = get_rotating_register(Creg);
-  complex_load(creg, MATRIX[2][2][0], Cptr, GaugeType);
-  complex_madd(areg, B2, creg);
-  complex_store(areg, MATRIX[2][2][0], Aptr, GaugeType);
-
-
-  iterate_stream(PreA);
-  iterate_stream(PreC);
-
-
-  stop_loop(brchno,counter);
-
-
-  make_inst(DIRECTIVE,Target,retno);
-
-  restore_regs();
-  free_stack();
-  make_inst(DIRECTIVE,Exit_Routine,name);
-#endif
 
   return;
 }

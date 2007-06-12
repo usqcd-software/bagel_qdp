@@ -44,7 +44,7 @@ noinst_PROGRAMS = write_vaxpy$(EXEEXT) write_vaxpby$(EXEEXT) \
 	write_vag5xpby$(EXEEXT) write_vxpag5y$(EXEEXT) \
 	write_vg5axpby$(EXEEXT) write_vaxpbg5iy$(EXEEXT) \
 	write_vxpag5iy$(EXEEXT) write_su3_mm$(EXEEXT) \
-	write_su3_ma$(EXEEXT)
+	write_su3_mm_peq$(EXEEXT)
 subdir = code_gen
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -65,12 +65,12 @@ write_local_vcdot_LDADD = $(LDADD)
 am_write_local_vcdot_real_OBJECTS = write_local_vcdot_real.$(OBJEXT)
 write_local_vcdot_real_OBJECTS = $(am_write_local_vcdot_real_OBJECTS)
 write_local_vcdot_real_LDADD = $(LDADD)
-am_write_su3_ma_OBJECTS = write_su3_ma.$(OBJEXT)
-write_su3_ma_OBJECTS = $(am_write_su3_ma_OBJECTS)
-write_su3_ma_LDADD = $(LDADD)
 am_write_su3_mm_OBJECTS = write_su3_mm.$(OBJEXT)
 write_su3_mm_OBJECTS = $(am_write_su3_mm_OBJECTS)
 write_su3_mm_LDADD = $(LDADD)
+am_write_su3_mm_peq_OBJECTS = write_su3_mm_peq.$(OBJEXT)
+write_su3_mm_peq_OBJECTS = $(am_write_su3_mm_peq_OBJECTS)
+write_su3_mm_peq_LDADD = $(LDADD)
 am_write_vadd_OBJECTS = write_vadd.$(OBJEXT)
 write_vadd_OBJECTS = $(am_write_vadd_OBJECTS)
 write_vadd_LDADD = $(LDADD)
@@ -128,8 +128,8 @@ CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
 SOURCES = $(write_local_sumsq_SOURCES) $(write_local_vcdot_SOURCES) \
-	$(write_local_vcdot_real_SOURCES) $(write_su3_ma_SOURCES) \
-	$(write_su3_mm_SOURCES) $(write_vadd_SOURCES) \
+	$(write_local_vcdot_real_SOURCES) $(write_su3_mm_SOURCES) \
+	$(write_su3_mm_peq_SOURCES) $(write_vadd_SOURCES) \
 	$(write_vadd_chproj_SOURCES) $(write_vag5xpby_SOURCES) \
 	$(write_vaxpbg5iy_SOURCES) $(write_vaxpbg5y_SOURCES) \
 	$(write_vaxpby_SOURCES) $(write_vaxpby_chproj_SOURCES) \
@@ -140,7 +140,7 @@ SOURCES = $(write_local_sumsq_SOURCES) $(write_local_vcdot_SOURCES) \
 	$(write_vxpay_chproj_SOURCES)
 DIST_SOURCES = $(write_local_sumsq_SOURCES) \
 	$(write_local_vcdot_SOURCES) $(write_local_vcdot_real_SOURCES) \
-	$(write_su3_ma_SOURCES) $(write_su3_mm_SOURCES) \
+	$(write_su3_mm_SOURCES) $(write_su3_mm_peq_SOURCES) \
 	$(write_vadd_SOURCES) $(write_vadd_chproj_SOURCES) \
 	$(write_vag5xpby_SOURCES) $(write_vaxpbg5iy_SOURCES) \
 	$(write_vaxpbg5y_SOURCES) $(write_vaxpby_SOURCES) \
@@ -281,7 +281,7 @@ write_vg5axpby_SOURCES = write_vg5axpby.cc
 write_vaxpbg5iy_SOURCES = write_vaxpbg5iy.cc
 write_vxpag5iy_SOURCES = write_vxpag5iy.cc
 write_su3_mm_SOURCES = write_su3_mm.cc
-write_su3_ma_SOURCES = write_su3_ma.cc
+write_su3_mm_peq_SOURCES = write_su3_mm_peq.cc
 all: all-am
 
 .SUFFIXES:
@@ -328,8 +328,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_local_sumsq.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_local_vcdot.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_local_vcdot_real.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_su3_ma.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_su3_mm.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_su3_mm_peq.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_vadd.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_vadd_chproj.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write_vag5xpby.Po@am__quote@
@@ -548,7 +548,7 @@ write_vg5axpby$(EXEEXT): write_vg5axpby.cc
 write_vaxpbg5iy$(EXEEXT): write_vaxpbg5iy.cc
 write_vxpag5iy$(EXEEXT): write_vxpag5iy.cc
 write_su3_mm$(EXEEXT): write_su3_mm.cc
-write_su3_ma$(EXEEXT): write_su3_ma.cc
+write_su3_mm_peq$(EXEEXT): write_su3_mm_peq.cc
 
 %$(EXEEXT): %.cc
 	$(buildCXX) $(buildCXXFLAGS) -o $@ $< $(buildLDFLAGS) $(buildLIBS)
