@@ -1,3 +1,9 @@
+2007-06-12 13:47  bjoo
+
+	* code_gen/Makefile.am, code_gen/write_su3_mm.cc,
+	  code_gen/write_su3_mm_peq.cc, lib/Makefile.am, lib/bagel_qdp.h:
+	  Added += tests too
+
 2007-06-12 10:32  bjoo
 
 	* code_gen/write_su3_mm_peq.cc: First go
