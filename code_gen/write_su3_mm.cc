@@ -21,12 +21,6 @@
 
 extern struct rotating_reg *CMADregs;
 
-void queue_conjugate(int e )
-{
-  int im_register = e + 1;
-  make_inst( FMOVPIPE, FNEG, im_register,im_register);
-}
-
 void bagel_su3( char *);
 
 #include "bagel_qdp_options.h"
@@ -92,25 +86,23 @@ void bagel_su3(char *name)
   alreg(Bptr,Iregs);
   alreg(Cptr,Iregs);
   alreg(counter,Iregs);
-  alreg(one_minus_iptr,Iregs);
-
+  alreg(OMIPtr, Iregs);
   alreg(Aprev,Iregs);
 
   
 
-  /* All the matrices */  
+  /* All the matrices */
+  alreg(OMI,Cregs);
+  
   reg_array_2d(A, Cregs, 3, 3);
   reg_array_2d(B, Cregs, 3, 3);
   reg_array_2d(C, Cregs, 3, 3);
 
-  int one_minus_i;
-  if ( bothConj) {
-    one_minus_i = allocate_reg(Cregs,"one_minus_i_ptr");
-    def_off(ZERO, GaugeType, 0);
-  }
-  
   /* Space between successive matrices */
   def_off(MATRIX_ATOM, GaugeType, 18);
+
+  /* Byte offset for one_minus_i */
+  int ioff = def_offset(0, Byte, "ioff");
 
   /* Offsets in the register arrays */
   offset_3d(MATRIX, GaugeType, 3, 3, 2);  
@@ -132,16 +124,12 @@ void bagel_su3(char *name)
   getarg(Bptr);           /*Get args*/
   getarg(Cptr);           /*Get args*/
   getarg(counter);
-  getarg(one_minus_iptr);
+  getarg(OMIPtr);
 
   for(int i=0; i < 18; i++) { 
     need_constant(i*2*SizeofDatum(GaugeType));
   }
   
-  if( bothConj ){
-    need_constant(0);
-  }
-
   PreA = create_stream(MATRIX_ATOM, Aptr,counter,STREAM_OUT,LINEAR);
   PreB = create_stream(MATRIX_ATOM, Bptr, counter, STREAM_IN, LINEAR);
   PreC = create_stream(MATRIX_ATOM, Cptr, counter, STREAM_IN, LINEAR);
@@ -153,13 +141,13 @@ void bagel_su3(char *name)
   /*
    * Start software pipeline
    */
-
+  if( bothConj ) {
+   complex_load(OMI, ioff, OMIPtr, GaugeType);  
+  }
 
   // Make the first Adude the previous one.
   make_inst (IALUPIPE,IOR,Aprev,Aptr,Aptr);
-  if( bothConj ) {
-    complex_load(one_minus_i, 0, one_minus_iptr, GaugeType);
-  }
+
   // Start loop
   brchno = start_loop(counter);
 
@@ -180,13 +168,13 @@ void bagel_su3(char *name)
 	complex_load(B[i][j], MATRIX[i][j][0], Bptr, GaugeType);
       }
 
-      if (bothConj ) { 
-	if( have_hummer() ) {
-	  make_inst( SIMD2HUMMERPIPE, FMUL2, B[j][i], one_minus_i, B[j][i]); 
-	}
-	else {
-	  queue_fneg(B[j][i]+1, B[j][i]+1);
-	}
+      if (bothConj ) {
+          if( have_hummer() ) {  
+	    make_inst( SIMD2HUMMERPIPE, FMUL2, B[j][i], OMI, B[j][i] );
+          }
+	  else { 
+	    queue_fneg(B[j][i]+1, B[j][i]+1);
+          }
       }
 
       if( conjC == true) {
@@ -197,12 +185,12 @@ void bagel_su3(char *name)
       }
 
       if (bothConj ) { 
-	if( have_hummer() ) {
-	  make_inst( SIMD2HUMMERPIPE, FMUL2, C[j][i], one_minus_i, C[j][i]); 
-	}
-	else {
+	if( have_hummer() ) { 
+	   make_inst( SIMD2HUMMERPIPE, FMUL2, C[j][i], OMI, C[j][i]);
+        }
+	else { 
 	  queue_fneg(C[j][i]+1, C[j][i]+1);
-	}
+        }
       }
     }
   }
