@@ -1,3 +1,8 @@
+2007-06-13 15:31  bjoo
+
+	* code_gen/write_su3_mm_peq.cc, lib/Makefile.am, lib/bagel_qdp.h:
+	  OK Here goes
+
 2007-06-12 13:47  bjoo
 
 	* code_gen/Makefile.am, code_gen/write_su3_mm.cc,
