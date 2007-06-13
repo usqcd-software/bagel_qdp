@@ -32,9 +32,9 @@ static const char* const BAGEL_QDP_VERSION(VERSION);
 
 /* User defined */
 #ifdef USE_DOUBLE
-typedef double Float;
+typedef double BAGELQDPFloat;
 #else
-typedef float Float;
+typedef float BAGELQDPFloat;
 #endif
 
 #endif
