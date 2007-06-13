@@ -1,3 +1,8 @@
+2007-06-13 17:47  bjoo
+
+	* lib/: bagel_qdp.h, bagel_qdp_options.h: Oops. Had to move Float
+	  to BAGELQDPFloat
+
 2007-06-13 15:31  bjoo
 
 	* code_gen/write_su3_mm_peq.cc, lib/Makefile.am, lib/bagel_qdp.h:
