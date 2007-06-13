@@ -310,7 +310,6 @@ extern "C" {
   //             - one_minus_i_ptr is ignored
   //
   void qdp_su3_mm_peq(Float* A,
-		      Float* D,
 		      Float* a,
 		      Float* B,
 		      Float* C,
@@ -322,7 +321,6 @@ extern "C" {
   //                      - one_minus_i_ptr is ignored
   //
   void qdp_su3_ma_peq(Float* A,
-		      Float* D,
 		      Float* a,
 		      Float* B,
 		      Float* C,
@@ -334,7 +332,6 @@ extern "C" {
   //                         - one_minus_i_ptr is ignored
   //
   void qdp_su3_am_peq(Float* A,
-		      Float* D,
 		      Float* a,
 		      Float* B,
 		      Float* C,
@@ -358,7 +355,6 @@ extern "C" {
   //                   how to do it without modifying BAGEL
   //
   void qdp_su3_aa_peq(Float* A,
-		      Float* D,
 		      Float* a,
 		      Float* B,
 		      Float* C,

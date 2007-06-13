@@ -148,7 +148,7 @@ libbagel_qdp_a_DEPENDENCIES= $(extra_sources) \
 	$(bagelWriterDir)/write_vaxpbg5iy$(EXEEXT) \
 	$(bagelWriterDir)/write_vxpag5iy$(EXEEXT) \
 	$(bagelWriterDir)/write_su3_mm$(EXEEXT) \
-	$(bagelWriterDir)/write_su3_ma$(EXEEXT)
+	$(bagelWriterDir)/write_su3_mm_peq$(EXEEXT)
 
 # Funky rules for making the .S and .C sources
 bagelTargetName = @bagel_MUNGED_TARGET@
