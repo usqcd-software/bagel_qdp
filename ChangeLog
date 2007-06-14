@@ -1,3 +1,7 @@
+2007-06-14 11:30  bjoo
+
+	* aclocal.m4: Re made the autofile thingies with automake 1.9.2
+
 2007-06-13 17:47  bjoo
 
 	* lib/: bagel_qdp.h, bagel_qdp_options.h: Oops. Had to move Float
