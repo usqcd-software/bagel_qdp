@@ -1,0 +1,184 @@
+2007-06-14 11:30  bjoo
+
+	* aclocal.m4: Re made the autofile thingies with automake 1.9.2
+
+2007-06-13 17:47  bjoo
+
+	* lib/: bagel_qdp.h, bagel_qdp_options.h: Oops. Had to move Float
+	  to BAGELQDPFloat
+
+2007-06-13 15:31  bjoo
+
+	* code_gen/write_su3_mm_peq.cc, lib/Makefile.am, lib/bagel_qdp.h:
+	  OK Here goes
+
+2007-06-12 13:47  bjoo
+
+	* code_gen/Makefile.am, code_gen/write_su3_mm.cc,
+	  code_gen/write_su3_mm_peq.cc, lib/Makefile.am, lib/bagel_qdp.h:
+	  Added += tests too
+
+2007-06-12 10:32  bjoo
+
+	* code_gen/write_su3_mm_peq.cc: First go
+
+2007-06-12 09:49  bjoo
+
+	* configure, code_gen/write_su3_mm.cc: Yet another try
+
+2007-06-11 17:18  bjoo
+
+	* code_gen/write_su3_mm.cc: Yet another try then
+
+2007-06-10 19:47  bjoo
+
+	* lib/bagel_qdp.h: And this goes with it
+
+2007-06-10 19:47  bjoo
+
+	* code_gen/write_su3_mm.cc: Try this
+
+2007-06-10 17:01  bjoo
+
+	* code_gen/write_su3_mm.cc: write_su3_mm.cc - new try at
+	  conjugation
+
+2007-06-08 20:06  bjoo
+
+	* code_gen/write_su3_mm.cc: Try this
+
+2007-06-08 16:08  bjoo
+
+	* code_gen/write_su3_mm.cc, lib/Makefile.am, lib/bagel_qdp.h: added
+	  Su3 routines
+
+2007-04-06 17:09  bjoo
+
+	* configure, code_gen/Makefile.am, code_gen/write_su3_ma.cc,
+	  lib/Makefile.am, lib/bagel_qdp.h: Changes to bagel_qdp
+
+2007-04-05 16:48  bjoo
+
+	* code_gen/write_su3_ma.cc: First scratch
+
+2007-04-05 15:32  bjoo
+
+	* lib/Makefile.am: Added change here
+
+2007-04-05 15:31  bjoo
+
+	* code_gen/write_su3_mm.cc: write_su3_mm.cc now produces something
+	  on the BGL
+
+2007-03-28 21:54  bjoo
+
+	* configure, lib/bagel_qdp.h: Backed out SU3 from the header file
+
+2007-03-28 21:49  bjoo
+
+	* code_gen/write_su3_mm.cc, lib/Makefile.am: Backed out SU3 cos it
+	  dont work on the Bluegene
+
+2007-03-28 20:14  bjoo
+
+	* configure, configure.ac, code_gen/write_su3_mm.cc,
+	  lib/Makefile.am: Fred
+
+2007-03-28 13:58  bjoo
+
+	* lib/Makefile.am: Stop building the SU3 stuff for now cos it
+	  doesnt work
+
+2007-03-28 13:19  bjoo
+
+	* tests/t_blas.cc: OK Go try on a BG/L
+
+2007-03-28 12:22  bjoo
+
+	* aclocal.m4, configure, code_gen/Makefile.am, lib/Makefile.am,
+	  lib/bagel_qdp.h, tests/t_blas.cc: Try it on a BG/L
+
+2007-03-28 12:22  bjoo
+
+	* code_gen/write_su3_mm.cc: SU3?
+
+2006-06-07 12:48  tag bagel_qdp1-1-7
+
+2006-06-07 12:48  bjoo
+
+	* aclocal.m4, configure: Induced changes
+
+2006-06-07 12:48  bjoo
+
+	* configure.ac: Did autoconfery
+
+2006-06-07 12:45  bjoo
+
+	* AUTHORS, COPYING, INSTALL, Makefile.am, NEWS, README,
+	  acinclude.m4, aclocal.m4, bagel-qdp-config.in, configure,
+	  configure.ac: Did autoconfery
+
+2006-06-07 09:52  bjoo
+
+	* configure: Induced changes
+
+2006-06-07 09:51  bjoo
+
+	* configure.ac: Bumped version to 1.1.7
+
+2006-06-07 09:44  bjoo
+
+	* aclocal.m4, configure: Remade Makefile.ins. I don't fully trust
+	  the aclocal created by the BGL autotools
+
+2006-06-07 09:43  bjoo
+
+	* aclocal.m4, configure, configure.ac: Added bgl to list of target
+	  CPUs
+
+2006-05-18 21:08  tag bagel_qdp1-1-6
+
+2006-05-18 21:08  edwards
+
+	* aclocal.m4, configure: INduced changes.
+
+2006-05-18 21:07  edwards
+
+	* configure.ac: Changed to 1.1.6
+
+2006-05-18 14:04  bjoo
+
+	* aclocal.m4, code_gen/write_local_sumsq.cc,
+	  code_gen/write_local_vcdot.cc,
+	  code_gen/write_local_vcdot_real.cc, code_gen/write_vadd.cc,
+	  code_gen/write_vadd_chproj.cc, code_gen/write_vag5xpby.cc,
+	  code_gen/write_vaxpbg5iy.cc, code_gen/write_vaxpbg5y.cc,
+	  code_gen/write_vaxpby.cc, code_gen/write_vaxpby_chproj.cc,
+	  code_gen/write_vaxpy.cc, code_gen/write_vaxpy_chproj.cc,
+	  code_gen/write_vg5axpby.cc, code_gen/write_vscal.cc,
+	  code_gen/write_vscal_chproj.cc, code_gen/write_vscal_g5.cc,
+	  code_gen/write_vxpag5iy.cc, code_gen/write_vxpag5y.cc,
+	  code_gen/write_vxpay_chproj.cc: Now compiles with new BAGEL
+
+2006-05-17 15:58  tag bagel_qdp1-1-5
+
+2006-05-17 15:58  bjoo
+
+	* configure.ac, configure: Induced changes
+
+2006-05-17 15:43  bjoo
+
+	* bagel-qdp-config.in: bagel-qdp-config.in has --ranlib and --ar
+	  feature
+
+2006-05-09 17:48  tag bagel_qdp1-1-4pre
+
+2006-05-09 17:48  tag bagel_qdp1_1_4
+
+2006-05-09 17:48  bjoo
+
+	* configure, configure.ac: V1.1.4 First commit
+
+2005-11-04 11:18  edwards
+
+	* code_gen/Makef
